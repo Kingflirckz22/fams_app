@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<title>Create Account - FAMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "surface-container-highest": "#e1e2e4",
+        "surface-container-high": "#e7e8ea",
+        "surface-container": "#edeef0",
+        "surface-container-low": "#f2f4f6",
+        "surface-container-lowest": "#ffffff",
+        "surface-dim": "#d9dadc",
+        "surface-bright": "#f8f9fb",
+        "surface-variant": "#e1e2e4",
+        "surface": "#f8f9fb",
+        "on-surface": "#191c1e",
+        "on-surface-variant": "#464650",
+        "on-background": "#191c1e",
+        "background": "#f7f8fa",
+        "outline": "#767681",
+        "outline-variant": "#c6c5d1",
+        "primary": "#06104c",
+        "on-primary": "#ffffff",
+        "primary-container": "#1e2761",
+        "on-primary-container": "#8790d0",
+        "primary-fixed": "#dfe0ff",
+        "primary-fixed-dim": "#bbc3ff",
+        "on-primary-fixed": "#0a144f",
+        "on-primary-fixed-variant": "#39427d",
+        "inverse-primary": "#bbc3ff",
+        "secondary": "#1b6d24",
+        "on-secondary": "#ffffff",
+        "secondary-container": "#a0f399",
+        "on-secondary-container": "#217128",
+        "secondary-fixed": "#a3f69c",
+        "secondary-fixed-dim": "#88d982",
+        "on-secondary-fixed": "#002204",
+        "on-secondary-fixed-variant": "#005312",
+        "tertiary": "#3b0002",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#620006",
+        "on-tertiary-container": "#ff5d54",
+        "tertiary-fixed": "#ffdad6",
+        "tertiary-fixed-dim": "#ffb4ac",
+        "on-tertiary-fixed": "#410003",
+        "on-tertiary-fixed-variant": "#93000e",
+        "error": "#ba1a1a",
+        "on-error": "#ffffff",
+        "error-container": "#ffdad6",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#2e3132",
+        "inverse-on-surface": "#f0f1f3",
+        "success-academic": "#1b6d24"
+      },
+      borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+      spacing: { base: "4px", xs: "8px", sm: "12px", md: "16px", lg: "24px", xl: "32px", "container-margin": "16px", gutter: "12px", "touch-target": "44px" },
+      fontFamily: {
+        "label-md": ["Inter"], "headline-lg-mobile": ["Inter"], "headline-md": ["Inter"],
+        "body-lg": ["Inter"], "headline-sm": ["Inter"], "display-lg": ["Inter"],
+        "label-sm": ["Inter"], "body-md": ["Inter"]
+      },
+      fontSize: {
+        "label-md": ["14px", {lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600"}],
+        "headline-lg-mobile": ["28px", {lineHeight: "36px", fontWeight: "700"}],
+        "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600"}],
+        "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}],
+        "headline-sm": ["20px", {lineHeight: "28px", fontWeight: "600"}],
+        "display-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700"}],
+        "label-sm": ["12px", {lineHeight: "16px", fontWeight: "500"}],
+        "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}]
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { font-family: 'Inter', sans-serif; background-color: #f7f8fa; -webkit-tap-highlight-color: transparent; }
+</style>
+<style>
+  .floating-label-group { position: relative; margin-bottom: 24px; }
+  .floating-label-group input {
+    height: 56px; padding: 20px 16px 6px 16px; border: 1px solid #c6c5d1;
+    border-radius: 8px; width: 100%; font-size: 16px; transition: border-color 0.2s ease; background: white;
+  }
+  .floating-label-group input:focus { outline: none; border-color: #1E2761; border-width: 2px; }
+  .floating-label-group label {
+    position: absolute; left: 16px; top: 18px; color: #767681; pointer-events: none; transition: all 0.2s ease; font-size: 16px;
+  }
+  .floating-label-group input:focus ~ label,
+  .floating-label-group input:not(:placeholder-shown) ~ label {
+    top: 8px; font-size: 12px; color: #1E2761; font-weight: 600;
+  }
+  .strength-bar { height: 4px; border-radius: 2px; transition: all 0.3s ease; }
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-margin h-touch-target bg-surface shadow-sm">
+  <a href="index.html" class="flex items-center gap-xs">
+    <span class="material-symbols-outlined text-primary" style="font-size: 24px;">school</span>
+    <h1 class="font-headline-md text-headline-md font-bold text-primary">FAMS</h1>
+  </a>
+  <a href="student_login.html" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low active:scale-95 transition-all">
+    <span class="material-symbols-outlined">help_outline</span>
+  </a>
+</header>
+
+<main class="flex-grow pt-20 px-container-margin pb-40 max-w-md mx-auto w-full">
+  <div class="mb-lg">
+    <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-xs">Create Account</h2>
+    <p class="font-body-md text-body-md text-on-surface-variant">Join the Polytechnic's Smart Attendance System.</p>
+  </div>
+
+  <form class="space-y-0" id="registrationForm" onsubmit="return false">
+    <div class="floating-label-group">
+      <input id="fullName" placeholder=" " required type="text">
+      <label for="fullName">Full Name</label>
+    </div>
+    <div class="floating-label-group">
+      <input id="regNumber" placeholder=" " required type="text">
+      <label for="regNumber">Matriculation Number</label>
+    </div>
+    <div class="mb-6">
+      <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1" for="level">Level</label>
+      <select id="level" class="w-full h-14 px-4 border border-outline-variant rounded-lg font-body-md text-body-md bg-white focus:outline-none focus:border-primary focus:border-2">
+        <option value="">Select your level</option>
+        <option value="ND1">ND1 — National Diploma 1</option>
+        <option value="ND2">ND2 — National Diploma 2</option>
+        <option value="HND1">HND1 — Higher National Diploma 1</option>
+        <option value="HND2">HND2 — Higher National Diploma 2</option>
+      </select>
+    </div>
+    <div class="floating-label-group">
+      <input id="email" placeholder=" " required type="email">
+      <label for="email"> Email</label>
+    </div>
+    <div class="floating-label-group !mb-2">
+      <input id="password" oninput="checkStrength(this.value)" placeholder=" " required type="password">
+      <label for="password">Password</label>
+    </div>
+    <div class="px-xs mb-md">
+      <div class="flex gap-1 mb-1">
+        <div class="strength-bar flex-1 bg-surface-container-highest" id="segment-1"></div>
+        <div class="strength-bar flex-1 bg-surface-container-highest" id="segment-2"></div>
+        <div class="strength-bar flex-1 bg-surface-container-highest" id="segment-3"></div>
+        <div class="strength-bar flex-1 bg-surface-container-highest" id="segment-4"></div>
+      </div>
+      <p class="font-label-sm text-label-sm text-on-surface-variant" id="strengthText">Strength: No password</p>
+    </div>
+    <div class="floating-label-group">
+      <input id="confirmPassword" placeholder=" " required type="password">
+      <label for="confirmPassword">Confirm Password</label>
+    </div>
+
+    <div id="error-alert" class="hidden bg-error-container text-on-error-container rounded-lg p-sm font-label-sm text-label-sm mb-md"></div>
+  </form>
+
+  <div class="mt-lg flex justify-center opacity-40">
+    <div class="w-full h-32 rounded-xl bg-surface-container overflow-hidden relative">
+      <div class="absolute inset-0 flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary/20" style="font-size: 80px;">badge</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="fixed bottom-0 left-0 w-full bg-surface-container-lowest border-t border-outline-variant/10 px-container-margin pb-8 pt-4 flex flex-col gap-sm">
+  <button class="w-full h-14 bg-primary text-on-primary font-label-md text-label-md rounded-xl shadow-lg hover:bg-primary-container hover:text-on-primary-container active:scale-[0.98] transition-all flex items-center justify-center gap-xs" id="submit-btn" onclick="submitRegistration()" type="button">
+    Create Account
+    <span class="material-symbols-outlined">arrow_forward</span>
+  </button>
+  <p class="text-center font-body-md text-body-md text-on-surface-variant">
+    Already have an account?
+    <a class="text-primary font-bold hover:underline" href="student_login.html">Log in.</a>
+  </p>
+</div>
+
+<script>
+const API = "";
+
+function checkStrength(password) {
+  const strengthText = document.getElementById('strengthText');
+  const segments = [1,2,3,4].map(n => document.getElementById('segment-' + n));
+  let strength = 0;
+  if (password.length > 5) strength++;
+  if (password.length > 8) strength++;
+  if (/[A-Z]/.test(password) && /[0-9]/.test(password)) strength++;
+  if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+  segments.forEach(s => { s.className = 'strength-bar flex-1 bg-surface-container-highest'; });
+
+  if (password.length === 0) {
+    strengthText.innerText = "Strength: No password";
+    strengthText.className = "font-label-sm text-label-sm text-on-surface-variant";
+    return;
+  }
+
+  const colors = ['bg-error', 'bg-on-tertiary-container', 'bg-secondary-container', 'bg-secondary'];
+  const text = ["Weak", "Fair", "Good", "Strong"];
+
+  for (let i = 0; i < strength; i++) {
+    segments[i].classList.remove('bg-surface-container-highest');
+    segments[i].classList.add(colors[strength - 1]);
+  }
+  strengthText.innerText = "Strength: " + text[strength - 1];
+  strengthText.className = "font-label-sm text-label-sm " + (strength <= 1 ? "text-error" : strength === 2 ? "text-on-tertiary-container" : "text-secondary");
+}
+
+async function submitRegistration() {
+  const fullName = document.getElementById('fullName').value.trim();
+  const regNumber = document.getElementById('regNumber').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  const errorAlert = document.getElementById('error-alert');
+  const btn = document.getElementById('submit-btn');
+  errorAlert.classList.add('hidden');
+
+  if (!fullName || !regNumber || !email || !password) {
+    errorAlert.textContent = 'Please fill in all fields.';
+    errorAlert.classList.remove('hidden');
+    return;
+  }
+  if (password !== confirmPassword) {
+    errorAlert.textContent = 'Passwords do not match.';
+    errorAlert.classList.remove('hidden');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Creating...';
+
+  const fd = new FormData();
+  fd.append('full_name', fullName);
+  fd.append('registration_number', regNumber);
+  fd.append('email', email);
+  fd.append('password', password);
+  fd.append('level', document.getElementById('level').value);
+
+  try {
+    const res = await fetch(`${API}/students/register`, { method: 'POST', body: fd });
+    const data = await res.json();
+    if (!res.ok) {
+      errorAlert.textContent = data.detail || 'Registration failed.';
+      errorAlert.classList.remove('hidden');
+      btn.disabled = false;
+      btn.innerHTML = 'Create Account <span class="material-symbols-outlined">arrow_forward</span>';
+      return;
+    }
+    btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Account created!';
+    setTimeout(() => window.location.href = 'student_login.html', 1200);
+  } catch (e) {
+    errorAlert.textContent = 'Connection error. Is the server running?';
+    errorAlert.classList.remove('hidden');
+    btn.disabled = false;
+    btn.innerHTML = 'Create Account <span class="material-symbols-outlined">arrow_forward</span>';
+  }
+}
+</script>
+</body>
+</html>

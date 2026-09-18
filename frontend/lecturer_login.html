@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<title>Lecturer Login - FAMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "surface-container-highest": "#e1e2e4",
+        "surface-container-high": "#e7e8ea",
+        "surface-container": "#edeef0",
+        "surface-container-low": "#f2f4f6",
+        "surface-container-lowest": "#ffffff",
+        "surface-dim": "#d9dadc",
+        "surface-bright": "#f8f9fb",
+        "surface-variant": "#e1e2e4",
+        "surface": "#f8f9fb",
+        "on-surface": "#191c1e",
+        "on-surface-variant": "#464650",
+        "on-background": "#191c1e",
+        "background": "#f7f8fa",
+        "outline": "#767681",
+        "outline-variant": "#c6c5d1",
+        "primary": "#06104c",
+        "on-primary": "#ffffff",
+        "primary-container": "#1e2761",
+        "on-primary-container": "#8790d0",
+        "primary-fixed": "#dfe0ff",
+        "primary-fixed-dim": "#bbc3ff",
+        "on-primary-fixed": "#0a144f",
+        "on-primary-fixed-variant": "#39427d",
+        "inverse-primary": "#bbc3ff",
+        "secondary": "#1b6d24",
+        "on-secondary": "#ffffff",
+        "secondary-container": "#a0f399",
+        "on-secondary-container": "#217128",
+        "secondary-fixed": "#a3f69c",
+        "secondary-fixed-dim": "#88d982",
+        "on-secondary-fixed": "#002204",
+        "on-secondary-fixed-variant": "#005312",
+        "tertiary": "#3b0002",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#620006",
+        "on-tertiary-container": "#ff5d54",
+        "tertiary-fixed": "#ffdad6",
+        "tertiary-fixed-dim": "#ffb4ac",
+        "on-tertiary-fixed": "#410003",
+        "on-tertiary-fixed-variant": "#93000e",
+        "error": "#ba1a1a",
+        "on-error": "#ffffff",
+        "error-container": "#ffdad6",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#2e3132",
+        "inverse-on-surface": "#f0f1f3",
+        "success-academic": "#1b6d24"
+      },
+      borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+      spacing: { base: "4px", xs: "8px", sm: "12px", md: "16px", lg: "24px", xl: "32px", "container-margin": "16px", gutter: "12px", "touch-target": "44px" },
+      fontFamily: {
+        "label-md": ["Inter"], "headline-lg-mobile": ["Inter"], "headline-md": ["Inter"],
+        "body-lg": ["Inter"], "headline-sm": ["Inter"], "display-lg": ["Inter"],
+        "label-sm": ["Inter"], "body-md": ["Inter"]
+      },
+      fontSize: {
+        "label-md": ["14px", {lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600"}],
+        "headline-lg-mobile": ["28px", {lineHeight: "36px", fontWeight: "700"}],
+        "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600"}],
+        "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}],
+        "headline-sm": ["20px", {lineHeight: "28px", fontWeight: "600"}],
+        "display-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700"}],
+        "label-sm": ["12px", {lineHeight: "16px", fontWeight: "500"}],
+        "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}]
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { font-family: 'Inter', sans-serif; background-color: #f7f8fa; -webkit-tap-highlight-color: transparent; }
+</style>
+
+<style>
+  .input-floating-label:focus-within label,
+  .input-floating-label input:not(:placeholder-shown) + label {
+    transform: translateY(-24px) scale(0.85); color: #1E2761; background: white; padding: 0 4px;
+  }
+  .staff-gradient { background: linear-gradient(135deg, #06104C 0%, #1E2761 100%); }
+</style>
+</head>
+<body class="antialiased text-on-background">
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-margin h-touch-target bg-surface shadow-[0px_4px_16px_rgba(0,0,0,0.12)]">
+  <a href="index.html" class="flex items-center gap-xs">
+    <span class="material-symbols-outlined text-primary">school</span>
+    <span class="font-headline-md text-headline-md font-bold text-primary">FAMS</span>
+  </a>
+  <span class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-sm text-label-sm tracking-wider uppercase">STAFF PORTAL</span>
+</header>
+
+<main class="min-h-screen pt-24 pb-12 px-container-margin flex flex-col justify-center items-center">
+  <div class="w-full max-w-md text-center mb-lg">
+    <div class="w-20 h-20 bg-surface-container-high rounded-2xl mx-auto mb-md flex items-center justify-center shadow-sm">
+      <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+    </div>
+    <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background mb-base">Lecturer Login</h1>
+    <p class="font-body-md text-body-md text-on-surface-variant max-w-xs mx-auto">Facial Attendance Management System for Staff.</p>
+  </div>
+
+  <div class="w-full max-w-md bg-surface-container-lowest p-lg rounded-xl shadow-[0px_4px_16px_rgba(0,0,0,0.12)]">
+    <form class="space-y-lg" onsubmit="return false;">
+      <div class="flex items-center gap-sm p-sm bg-surface-container-low rounded-lg border-l-4 border-primary mb-md">
+        <span class="material-symbols-outlined text-primary">verified_user</span>
+        <div>
+          <p class="font-label-md text-label-md text-primary">Official Access Only</p>
+          <p class="font-label-sm text-label-sm text-on-surface-variant">Authorized polytechnic personnel login.</p>
+        </div>
+      </div>
+
+      <div class="relative input-floating-label h-14 border border-outline-variant rounded-lg flex items-center px-md transition-all focus-within:border-primary-container focus-within:ring-1 focus-within:ring-primary-container">
+        <span class="material-symbols-outlined text-on-surface-variant mr-sm">badge</span>
+        <input class="w-full h-full bg-transparent border-none focus:ring-0 font-body-md text-body-md p-0 outline-none" id="username" placeholder=" " type="text">
+        <label class="absolute left-11 top-4 text-on-surface-variant font-body-md transition-all pointer-events-none origin-left" for="username">Username</label>
+      </div>
+
+      <div class="relative input-floating-label h-14 border border-outline-variant rounded-lg flex items-center px-md transition-all focus-within:border-primary-container focus-within:ring-1 focus-within:ring-primary-container">
+        <span class="material-symbols-outlined text-on-surface-variant mr-sm">lock</span>
+        <input class="w-full h-full bg-transparent border-none focus:ring-0 font-body-md text-body-md p-0 outline-none" id="password" placeholder=" " type="password">
+        <label class="absolute left-11 top-4 text-on-surface-variant font-body-md transition-all pointer-events-none origin-left" for="password">Password</label>
+        <button class="material-symbols-outlined text-on-surface-variant" id="toggle-pw" type="button" onclick="togglePw()">visibility</button>
+      </div>
+
+      <div id="error-alert" class="hidden bg-error-container text-on-error-container rounded-lg p-sm font-label-sm text-label-sm"></div>
+
+      <button class="w-full h-touch-target staff-gradient text-on-primary rounded-xl font-label-md text-label-md shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-sm" id="login-btn" onclick="login()" type="button">
+        Access Portal
+        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+      </button>
+    </form>
+  </div>
+
+  <div class="mt-lg text-center">
+    <p class="font-body-md text-body-md text-on-surface-variant mb-md">Are you a student?</p>
+    <a class="inline-flex items-center px-lg py-sm border border-outline-variant rounded-full font-label-md text-label-md text-primary hover:bg-surface-container transition-colors" href="student_login.html">Student Login</a>
+  </div>
+  <div class="mt-md">
+    <a class="font-label-sm text-label-sm text-primary-container hover:underline" href="lecturer_register.html">New lecturer? Create an account</a>
+  </div>
+
+  <footer class="mt-auto pt-xl w-full text-center">
+    <p class="font-label-sm text-label-sm text-outline mt-base">© 2026 FAMS. All rights reserved.</p>
+  </footer>
+</main>
+
+<div class="fixed bottom-0 right-0 -z-10 w-64 h-64 opacity-5 pointer-events-none">
+  <span class="material-symbols-outlined text-[200px]">account_balance</span>
+</div>
+
+<script>
+const API = "";
+
+function togglePw() {
+  const input = document.getElementById('password');
+  const btn = document.getElementById('toggle-pw');
+  const isPw = input.getAttribute('type') === 'password';
+  input.setAttribute('type', isPw ? 'text' : 'password');
+  btn.textContent = isPw ? 'visibility_off' : 'visibility';
+}
+
+async function login() {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  const errorAlert = document.getElementById('error-alert');
+  const btn = document.getElementById('login-btn');
+  errorAlert.classList.add('hidden');
+
+  if (!username || !password) {
+    errorAlert.textContent = 'Please enter your username and password.';
+    errorAlert.classList.remove('hidden');
+    return;
+  }
+
+  btn.disabled = true;
+  const fd = new FormData();
+  fd.append('username', username);
+  fd.append('password', password);
+
+  try {
+    const res = await fetch(`${API}/lecturers/login`, { method: 'POST', body: fd });
+    const data = await res.json();
+    if (!res.ok) {
+      errorAlert.textContent = data.detail || 'Login failed.';
+      errorAlert.classList.remove('hidden');
+      btn.disabled = false;
+      return;
+    }
+    localStorage.setItem('lecturer_token', data.token);
+    localStorage.setItem('lecturer_name', data.name);
+    window.location.href = 'lecturer_dashboard.html';
+  } catch (e) {
+    errorAlert.textContent = 'Connection error. Is the server running?';
+    errorAlert.classList.remove('hidden');
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>

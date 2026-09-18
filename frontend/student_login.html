@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<title>Welcome Back - FAMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "surface-container-highest": "#e1e2e4",
+        "surface-container-high": "#e7e8ea",
+        "surface-container": "#edeef0",
+        "surface-container-low": "#f2f4f6",
+        "surface-container-lowest": "#ffffff",
+        "surface-dim": "#d9dadc",
+        "surface-bright": "#f8f9fb",
+        "surface-variant": "#e1e2e4",
+        "surface": "#f8f9fb",
+        "on-surface": "#191c1e",
+        "on-surface-variant": "#464650",
+        "on-background": "#191c1e",
+        "background": "#f7f8fa",
+        "outline": "#767681",
+        "outline-variant": "#c6c5d1",
+        "primary": "#06104c",
+        "on-primary": "#ffffff",
+        "primary-container": "#1e2761",
+        "on-primary-container": "#8790d0",
+        "primary-fixed": "#dfe0ff",
+        "primary-fixed-dim": "#bbc3ff",
+        "on-primary-fixed": "#0a144f",
+        "on-primary-fixed-variant": "#39427d",
+        "inverse-primary": "#bbc3ff",
+        "secondary": "#1b6d24",
+        "on-secondary": "#ffffff",
+        "secondary-container": "#a0f399",
+        "on-secondary-container": "#217128",
+        "secondary-fixed": "#a3f69c",
+        "secondary-fixed-dim": "#88d982",
+        "on-secondary-fixed": "#002204",
+        "on-secondary-fixed-variant": "#005312",
+        "tertiary": "#3b0002",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#620006",
+        "on-tertiary-container": "#ff5d54",
+        "tertiary-fixed": "#ffdad6",
+        "tertiary-fixed-dim": "#ffb4ac",
+        "on-tertiary-fixed": "#410003",
+        "on-tertiary-fixed-variant": "#93000e",
+        "error": "#ba1a1a",
+        "on-error": "#ffffff",
+        "error-container": "#ffdad6",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#2e3132",
+        "inverse-on-surface": "#f0f1f3",
+        "success-academic": "#1b6d24"
+      },
+      borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+      spacing: { base: "4px", xs: "8px", sm: "12px", md: "16px", lg: "24px", xl: "32px", "container-margin": "16px", gutter: "12px", "touch-target": "44px" },
+      fontFamily: {
+        "label-md": ["Inter"], "headline-lg-mobile": ["Inter"], "headline-md": ["Inter"],
+        "body-lg": ["Inter"], "headline-sm": ["Inter"], "display-lg": ["Inter"],
+        "label-sm": ["Inter"], "body-md": ["Inter"]
+      },
+      fontSize: {
+        "label-md": ["14px", {lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600"}],
+        "headline-lg-mobile": ["28px", {lineHeight: "36px", fontWeight: "700"}],
+        "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600"}],
+        "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}],
+        "headline-sm": ["20px", {lineHeight: "28px", fontWeight: "600"}],
+        "display-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700"}],
+        "label-sm": ["12px", {lineHeight: "16px", fontWeight: "500"}],
+        "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}]
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { font-family: 'Inter', sans-serif; background-color: #f7f8fa; -webkit-tap-highlight-color: transparent; }
+</style>
+<style>
+  .floating-label-input:focus-within label,
+  .floating-label-input input:not(:placeholder-shown) + label {
+    transform: translateY(-24px) scale(0.85);
+    color: #1E2761;
+    font-weight: 600;
+  }
+  .academic-mesh { background-image: radial-gradient(#1e276110 1px, transparent 1px); background-size: 24px 24px; }
+</style>
+</head>
+<body class="min-h-screen flex flex-col academic-mesh items-center justify-center p-container-margin">
+<header class="fixed top-0 left-0 w-full px-container-margin h-touch-target flex items-center justify-between z-50">
+  <a href="index.html" class="flex items-center gap-xs">
+    <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">school</span>
+    <span class="font-headline-md text-headline-md font-bold text-primary-container tracking-tight">FAMS</span>
+  </a>
+</header>
+
+<main class="w-full max-w-[400px] mt-xl">
+  <div class="flex w-full mb-lg bg-surface-container rounded-xl p-1 gap-1">
+    <button id="tab-student" class="flex-1 py-2 rounded-lg font-label-md text-label-md transition-all bg-white shadow-sm text-primary-container">Student</button>
+    <button id="tab-staff" onclick="window.location.href='lecturer_login.html'" class="flex-1 py-2 rounded-lg font-label-md text-label-md transition-all text-on-surface-variant hover:bg-surface-variant">Staff</button>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-[0px_4px_16px_rgba(0,0,0,0.12)] p-xl flex flex-col gap-lg border border-surface-container-highest">
+    <div class="space-y-xs">
+      <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background">Welcome Back</h1>
+      <p class="font-body-md text-body-md text-on-surface-variant">Log in to access your attendance portal.</p>
+    </div>
+
+    <div class="w-full h-40 rounded-lg overflow-hidden relative flex items-center justify-center" style="background: linear-gradient(135deg, #1e2761 0%, #06104c 100%);">
+      <span class="material-symbols-outlined text-white/30 text-[80px]">account_balance</span>
+    </div>
+
+    <form class="flex flex-col gap-lg" id="loginForm" onsubmit="return false">
+      <div class="relative floating-label-input flex flex-col h-[56px] justify-center px-md border-b-2 border-outline-variant focus-within:border-primary-container transition-all">
+        <input class="peer w-full bg-transparent border-none p-0 focus:ring-0 font-body-md text-body-md text-on-background mt-base" id="email" placeholder=" " type="email">
+        <label class="absolute left-md top-1/2 -translate-y-1/2 font-body-md text-body-md text-on-surface-variant pointer-events-none transition-all origin-left" for="email">Email Address</label>
+      </div>
+      <div class="relative floating-label-input flex flex-col h-[56px] justify-center px-md border-b-2 border-outline-variant focus-within:border-primary-container transition-all">
+        <input class="peer w-full bg-transparent border-none p-0 focus:ring-0 font-body-md text-body-md text-on-background mt-base" id="password" placeholder=" " type="password">
+        <label class="absolute left-md top-1/2 -translate-y-1/2 font-body-md text-body-md text-on-surface-variant pointer-events-none transition-all origin-left" for="password">Password</label>
+        <button class="absolute right-md top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary-container active:scale-90 transition-all" type="button" onclick="toggleEye()">
+          <span class="material-symbols-outlined text-[20px]" id="eye-icon">visibility</span>
+        </button>
+      </div>
+
+      <div id="error-alert" class="hidden bg-error-container text-on-error-container rounded-lg p-sm font-label-sm text-label-sm"></div>
+
+      <div class="flex flex-col gap-md pt-base">
+        <button class="w-full h-touch-target bg-primary-container text-on-primary font-label-md text-label-md rounded-lg shadow-lg active:scale-[0.98] transition-all hover:brightness-110 flex items-center justify-center gap-xs" onclick="login()" type="button" id="login-btn">
+          Log In
+          <span class="material-symbols-outlined text-[18px]">login</span>
+        </button>
+      </div>
+    </form>
+
+    <div class="flex items-center gap-md">
+      <div class="flex-1 h-[1px] bg-outline-variant"></div>
+      <span class="font-label-sm text-label-sm text-outline">OR</span>
+      <div class="flex-1 h-[1px] bg-outline-variant"></div>
+    </div>
+
+    <div class="text-center">
+      <p class="font-body-md text-body-md text-on-surface-variant">
+        Don't have an account?
+        <a class="text-primary-container font-bold hover:underline" href="register.html">Create one</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-lg flex items-center justify-center gap-xs text-outline opacity-60">
+    <span class="material-symbols-outlined text-[16px]">verified_user</span>
+    <span class="font-label-sm text-label-sm">Secured with facial recognition technology</span>
+  </div>
+</main>
+
+<script>
+const API = "";
+
+function toggleEye() {
+  const input = document.getElementById('password');
+  const icon = document.getElementById('eye-icon');
+  const isPassword = input.type === 'password';
+  input.type = isPassword ? 'text' : 'password';
+  icon.textContent = isPassword ? 'visibility_off' : 'visibility';
+}
+
+document.querySelectorAll('.floating-label-input input').forEach(input => {
+  input.addEventListener('focus', () => input.parentElement.classList.add('border-primary-container'));
+  input.addEventListener('blur', () => { if (!input.value) input.parentElement.classList.remove('border-primary-container'); });
+});
+
+async function login() {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const errorAlert = document.getElementById('error-alert');
+  const btn = document.getElementById('login-btn');
+  errorAlert.classList.add('hidden');
+
+  if (!email || !password) {
+    errorAlert.textContent = 'Please enter your email and password.';
+    errorAlert.classList.remove('hidden');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span> Logging in...';
+
+  const fd = new FormData();
+  fd.append('email', email);
+  fd.append('password', password);
+
+  try {
+    const res = await fetch(`${API}/students/login`, { method: 'POST', body: fd });
+    const data = await res.json();
+    if (!res.ok) {
+      errorAlert.textContent = data.detail || 'Login failed.';
+      errorAlert.classList.remove('hidden');
+      btn.disabled = false;
+      btn.innerHTML = 'Log In <span class="material-symbols-outlined text-[18px]">login</span>';
+      return;
+    }
+    localStorage.setItem('student_token', data.token);
+    localStorage.setItem('student_name', data.name);
+    window.location.href = data.face_enrolled ? 'student_dashboard.html' : 'enroll_face.html';
+  } catch (e) {
+    errorAlert.textContent = 'Connection error. Is the server running?';
+    errorAlert.classList.remove('hidden');
+    btn.disabled = false;
+    btn.innerHTML = 'Log In <span class="material-symbols-outlined text-[18px]">login</span>';
+  }
+}
+</script>
+</body>
+</html>

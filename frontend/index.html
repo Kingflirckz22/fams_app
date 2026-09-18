@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<title>FAMS - Facial Attendance Management System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "surface-container-highest": "#e1e2e4",
+        "surface-container-high": "#e7e8ea",
+        "surface-container": "#edeef0",
+        "surface-container-low": "#f2f4f6",
+        "surface-container-lowest": "#ffffff",
+        "surface-dim": "#d9dadc",
+        "surface-bright": "#f8f9fb",
+        "surface-variant": "#e1e2e4",
+        "surface": "#f8f9fb",
+        "on-surface": "#191c1e",
+        "on-surface-variant": "#464650",
+        "on-background": "#191c1e",
+        "background": "#f7f8fa",
+        "outline": "#767681",
+        "outline-variant": "#c6c5d1",
+        "primary": "#06104c",
+        "on-primary": "#ffffff",
+        "primary-container": "#1e2761",
+        "on-primary-container": "#8790d0",
+        "primary-fixed": "#dfe0ff",
+        "primary-fixed-dim": "#bbc3ff",
+        "on-primary-fixed": "#0a144f",
+        "on-primary-fixed-variant": "#39427d",
+        "inverse-primary": "#bbc3ff",
+        "secondary": "#1b6d24",
+        "on-secondary": "#ffffff",
+        "secondary-container": "#a0f399",
+        "on-secondary-container": "#217128",
+        "secondary-fixed": "#a3f69c",
+        "secondary-fixed-dim": "#88d982",
+        "on-secondary-fixed": "#002204",
+        "on-secondary-fixed-variant": "#005312",
+        "tertiary": "#3b0002",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#620006",
+        "on-tertiary-container": "#ff5d54",
+        "tertiary-fixed": "#ffdad6",
+        "tertiary-fixed-dim": "#ffb4ac",
+        "on-tertiary-fixed": "#410003",
+        "on-tertiary-fixed-variant": "#93000e",
+        "error": "#ba1a1a",
+        "on-error": "#ffffff",
+        "error-container": "#ffdad6",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#2e3132",
+        "inverse-on-surface": "#f0f1f3",
+        "success-academic": "#1b6d24"
+      },
+      borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+      spacing: { base: "4px", xs: "8px", sm: "12px", md: "16px", lg: "24px", xl: "32px", "container-margin": "16px", gutter: "12px", "touch-target": "44px" },
+      fontFamily: {
+        "label-md": ["Inter"], "headline-lg-mobile": ["Inter"], "headline-md": ["Inter"],
+        "body-lg": ["Inter"], "headline-sm": ["Inter"], "display-lg": ["Inter"],
+        "label-sm": ["Inter"], "body-md": ["Inter"]
+      },
+      fontSize: {
+        "label-md": ["14px", {lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600"}],
+        "headline-lg-mobile": ["28px", {lineHeight: "36px", fontWeight: "700"}],
+        "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600"}],
+        "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}],
+        "headline-sm": ["20px", {lineHeight: "28px", fontWeight: "600"}],
+        "display-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700"}],
+        "label-sm": ["12px", {lineHeight: "16px", fontWeight: "500"}],
+        "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}]
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { font-family: 'Inter', sans-serif; background-color: #f7f8fa; -webkit-tap-highlight-color: transparent; }
+</style>
+<style>
+  .entrance-anim { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col overflow-x-hidden">
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-margin h-touch-target bg-surface shadow-[0px_4px_16px_rgba(0,0,0,0.12)]">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">school</span>
+    <h1 class="font-headline-md text-headline-md font-bold text-primary">FAMS</h1>
+  </div>
+  <div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden border border-outline-variant">
+    <span class="material-symbols-outlined text-on-surface-variant text-[20px]">account_circle</span>
+  </div>
+</header>
+
+<main class="flex-grow pt-[80px] pb-24 px-container-margin max-w-md mx-auto w-full">
+  <section class="mb-lg text-center entrance-anim">
+    <div class="inline-flex items-center justify-center p-md bg-primary-container/10 rounded-full mb-md">
+      <span class="material-symbols-outlined text-primary-container text-4xl" style="font-variation-settings: 'FILL' 1;">face_retouching_natural</span>
+    </div>
+    <h2 class="font-display-lg text-display-lg text-primary mb-xs">Attendance, verified.</h2>
+    <p class="font-body-md text-body-md text-on-surface-variant">By your face and your Wi-Fi.</p>
+  </section>
+
+  <div class="flex flex-col gap-md entrance-anim" style="animation-delay: 0.1s;">
+    <a href="register.html" class="group w-full text-left bg-surface-container-lowest rounded-xl p-lg shadow-[0px_4px_16px_rgba(0,0,0,0.12)] border border-transparent active:scale-95 transition-all duration-200 hover:border-primary-container/20 block">
+      <div class="flex items-center gap-md">
+        <div class="w-16 h-16 rounded-xl bg-primary-container flex items-center justify-center text-on-primary shrink-0">
+          <span class="material-symbols-outlined text-4xl">camera_front</span>
+        </div>
+        <div class="flex-grow">
+          <h3 class="font-headline-sm text-headline-sm text-primary mb-1">Student Portal</h3>
+          <p class="font-label-sm text-label-sm text-on-surface-variant">Scan face & verify location</p>
+        </div>
+        <span class="material-symbols-outlined text-outline transition-transform group-hover:translate-x-1">chevron_right</span>
+      </div>
+    </a>
+
+    <a href="lecturer_login.html" class="group w-full text-left bg-surface-container-lowest rounded-xl p-lg shadow-[0px_4px_16px_rgba(0,0,0,0.12)] border border-transparent active:scale-95 transition-all duration-200 hover:border-primary-container/20 block">
+      <div class="flex items-center gap-md">
+        <div class="w-16 h-16 rounded-xl bg-secondary-container flex items-center justify-center text-on-secondary-container shrink-0">
+          <span class="material-symbols-outlined text-4xl">assignment_ind</span>
+        </div>
+        <div class="flex-grow">
+          <h3 class="font-headline-sm text-headline-sm text-primary mb-1">Lecturer Login</h3>
+          <p class="font-label-sm text-label-sm text-on-surface-variant">Manage classes & reports</p>
+        </div>
+        <span class="material-symbols-outlined text-outline transition-transform group-hover:translate-x-1">chevron_right</span>
+      </div>
+    </a>
+  </div>
+
+  <section class="mt-xl entrance-anim" style="animation-delay: 0.2s;">
+    <div class="bg-surface-container-low rounded-xl p-md border border-outline-variant/30">
+      <div class="flex justify-between items-center mb-md">
+        <span class="font-label-md text-label-md text-on-surface">Campus Network</span>
+        <div class="flex items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+          <span class="font-label-sm text-label-sm text-secondary" id="network-status">Checking...</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-sm">
+        <div class="bg-white p-md rounded-lg shadow-sm">
+          <span class="block font-label-sm text-label-sm text-on-surface-variant">System</span>
+          <span class="font-headline-sm text-headline-sm text-primary">FAMS v1.0</span>
+        </div>
+        <div class="bg-white p-md rounded-lg shadow-sm">
+          <span class="block font-label-sm text-label-sm text-on-surface-variant">System Status</span>
+          <span class="font-headline-sm text-headline-sm text-secondary">Online</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<div class="mt-xl relative rounded-xl overflow-hidden h-48 entrance-anim" style="animation-delay: 0.3s;">
+  <img src="images/School_gate.jpg" alt="Facial recognition technology" class="absolute inset-0 w-full h-full object-cover">
+  <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent z-10"></div>
+  <div class="absolute bottom-md left-md z-20 text-white">
+    <p class="font-label-md text-label-md opacity-90">Verification Technology</p>
+    <h4 class="font-headline-sm text-headline-sm">Advanced Biometrics</h4>
+  </div>
+</div>
+
+  <div class="mt-lg text-center opacity-60">
+    <p class="font-label-sm text-label-sm text-outline">Federal Polytechnic Ado Ekiti, Networking and Cloud Computing Dept</p>
+  </div>
+
+
+    <footer class="mt-auto pt-xl w-full text-center">
+    <p class="font-label-sm text-label-sm text-outline mt-base">© 2026 FAMS. All rights reserved.</p>
+  </footer>
+</main>
+<script>
+  // Quick backend health check for the network status pill
+  fetch('/').then(r => r.ok ? document.getElementById('network-status').textContent = 'Server Active' : null)
+    .catch(() => { document.getElementById('network-status').textContent = 'Offline'; });
+</script>
+</body>
+</html>

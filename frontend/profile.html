@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<title>My Profile - FAMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "surface-container-highest": "#e1e2e4",
+        "surface-container-high": "#e7e8ea",
+        "surface-container": "#edeef0",
+        "surface-container-low": "#f2f4f6",
+        "surface-container-lowest": "#ffffff",
+        "surface-dim": "#d9dadc",
+        "surface-bright": "#f8f9fb",
+        "surface-variant": "#e1e2e4",
+        "surface": "#f8f9fb",
+        "on-surface": "#191c1e",
+        "on-surface-variant": "#464650",
+        "on-background": "#191c1e",
+        "background": "#f7f8fa",
+        "outline": "#767681",
+        "outline-variant": "#c6c5d1",
+        "primary": "#06104c",
+        "on-primary": "#ffffff",
+        "primary-container": "#1e2761",
+        "on-primary-container": "#8790d0",
+        "primary-fixed": "#dfe0ff",
+        "primary-fixed-dim": "#bbc3ff",
+        "on-primary-fixed": "#0a144f",
+        "on-primary-fixed-variant": "#39427d",
+        "inverse-primary": "#bbc3ff",
+        "secondary": "#1b6d24",
+        "on-secondary": "#ffffff",
+        "secondary-container": "#a0f399",
+        "on-secondary-container": "#217128",
+        "secondary-fixed": "#a3f69c",
+        "secondary-fixed-dim": "#88d982",
+        "on-secondary-fixed": "#002204",
+        "on-secondary-fixed-variant": "#005312",
+        "tertiary": "#3b0002",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#620006",
+        "on-tertiary-container": "#ff5d54",
+        "tertiary-fixed": "#ffdad6",
+        "tertiary-fixed-dim": "#ffb4ac",
+        "on-tertiary-fixed": "#410003",
+        "on-tertiary-fixed-variant": "#93000e",
+        "error": "#ba1a1a",
+        "on-error": "#ffffff",
+        "error-container": "#ffdad6",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#2e3132",
+        "inverse-on-surface": "#f0f1f3",
+        "success-academic": "#1b6d24"
+      },
+      borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+      spacing: { base: "4px", xs: "8px", sm: "12px", md: "16px", lg: "24px", xl: "32px", "container-margin": "16px", gutter: "12px", "touch-target": "44px" },
+      fontFamily: {
+        "label-md": ["Inter"], "headline-lg-mobile": ["Inter"], "headline-md": ["Inter"],
+        "body-lg": ["Inter"], "headline-sm": ["Inter"], "display-lg": ["Inter"],
+        "label-sm": ["Inter"], "body-md": ["Inter"]
+      },
+      fontSize: {
+        "label-md": ["14px", {lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600"}],
+        "headline-lg-mobile": ["28px", {lineHeight: "36px", fontWeight: "700"}],
+        "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600"}],
+        "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}],
+        "headline-sm": ["20px", {lineHeight: "28px", fontWeight: "600"}],
+        "display-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700"}],
+        "label-sm": ["12px", {lineHeight: "16px", fontWeight: "500"}],
+        "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}]
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { font-family: 'Inter', sans-serif; background-color: #f7f8fa; -webkit-tap-highlight-color: transparent; }
+</style>
+
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-16">
+<header class="fixed top-0 left-0 w-full z-50 flex items-center px-container-margin h-touch-target bg-surface shadow-[0px_4px_16px_rgba(0,0,0,0.12)]">
+  <button class="flex items-center justify-center w-10 h-10 -ml-2" onclick="openSidebar()">
+    <span class="material-symbols-outlined text-primary">menu</span>
+  </button>
+  <h1 class="font-headline-sm text-headline-sm text-primary flex-1 text-center">Profile</h1>
+  <div class="w-10 h-10"></div>
+</header>
+
+<div class="fixed inset-0 bg-black/40 z-[90] hidden" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<aside class="fixed top-0 left-0 h-full w-72 bg-surface-container-lowest z-[100] shadow-2xl -translate-x-full transition-transform duration-300 flex flex-col" id="sidebar">
+  <div class="p-lg border-b border-outline-variant flex items-center gap-sm bg-primary-container text-on-primary">
+    <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center font-headline-sm text-white" id="sidebar-initials">--</div>
+    <div class="overflow-hidden">
+      <p class="font-label-md text-label-md text-white truncate" id="sidebar-name">Student</p>
+      <p class="font-label-sm text-label-sm text-white/70 truncate" id="sidebar-reg">—</p>
+    </div>
+    <button class="ml-auto text-white/80 hover:text-white" onclick="closeSidebar()">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+  <nav class="flex-1 p-sm space-y-1 overflow-y-auto">
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="student_dashboard.html">
+      <span class="material-symbols-outlined">home</span><span class="font-label-md text-label-md">Home</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="courses.html">
+      <span class="material-symbols-outlined">menu_book</span><span class="font-label-md text-label-md">Courses</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="mark_attendance.html">
+      <span class="material-symbols-outlined">photo_camera</span><span class="font-label-md text-label-md">Mark Attendance</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="history.html">
+      <span class="material-symbols-outlined">history</span><span class="font-label-md text-label-md">History</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="profile.html">
+      <span class="material-symbols-outlined">person</span><span class="font-label-md text-label-md">Profile</span>
+    </a>
+  </nav>
+  <div class="p-sm border-t border-outline-variant">
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-error-container transition-colors text-error" href="#" onclick="logout()">
+      <span class="material-symbols-outlined">logout</span><span class="font-label-md text-label-md">Logout</span>
+    </a>
+  </div>
+</aside>
+
+
+<main class="pt-20 px-container-margin max-w-lg mx-auto">
+  <div class="flex flex-col items-center text-center mb-lg">
+    <div class="relative">
+      <div class="w-24 h-24 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-display-lg mb-md overflow-hidden" id="profile-avatar">
+        <span id="profile-initials">--</span>
+      </div>
+      <button class="absolute bottom-2 right-0 w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md active:scale-90 transition-transform" onclick="document.getElementById('photo-input').click()">
+        <span class="material-symbols-outlined text-[16px]">photo_camera</span>
+      </button>
+      <input type="file" id="photo-input" accept="image/*" class="hidden" onchange="uploadPhoto()">
+    </div>
+    <h2 class="font-headline-lg-mobile text-headline-lg-mobile" id="profile-name">Loading...</h2>
+    <p class="font-body-md text-on-surface-variant" id="profile-reg">—</p>
+  </div>
+
+  <div id="photo-alert" class="hidden bg-error-container text-on-error-container rounded-lg p-sm font-label-sm text-label-sm mb-md text-center"></div>
+
+  <div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant divide-y divide-outline-variant/40 mb-lg">
+    <div class="flex items-center gap-md p-md">
+      <span class="material-symbols-outlined text-primary">check_circle</span>
+      <div>
+        <p class="font-label-sm text-label-sm text-on-surface-variant">Face Enrollment Status</p>
+        <p class="font-label-md text-label-md text-secondary" id="enrollment-status">Enrolled</p>
+      </div>
+    </div>
+    <div class="p-md">
+      <a href="enroll_face.html" class="w-full h-11 border-2 border-primary text-primary rounded-lg font-label-md flex items-center justify-center gap-xs active:scale-95 transition-transform">
+        <span class="material-symbols-outlined text-[18px]">refresh</span>
+        Re-enroll My Face
+      </a>
+    </div>
+    <div class="flex items-center gap-md p-md">
+      <span class="material-symbols-outlined text-primary">school</span>
+      <div>
+        <p class="font-label-sm text-label-sm text-on-surface-variant">Institution</p>
+        <p class="font-label-md text-label-md">Federal Polytechnic Ado Ekiti</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-md mb-lg">
+    <h3 class="font-headline-sm text-headline-sm text-primary mb-md">Edit Level</h3>
+    <div class="mb-md">
+      <select id="level-select" class="w-full h-14 px-4 border border-outline-variant rounded-lg font-body-md text-body-md bg-white">
+        <option value="ND1">ND1 — National Diploma 1</option>
+        <option value="ND2">ND2 — National Diploma 2</option>
+        <option value="HND1">HND1 — Higher National Diploma 1</option>
+        <option value="HND2">HND2 — Higher National Diploma 2</option>
+      </select>
+    </div>
+    <div id="level-alert" class="hidden bg-secondary-container text-on-secondary-container rounded-lg p-sm font-label-sm text-label-sm mb-md text-center"></div>
+    <button class="w-full h-12 bg-primary text-on-primary rounded-lg font-label-md active:scale-95 transition-transform" onclick="saveLevel()">Save Level</button>
+  </div>
+
+  <button class="w-full h-touch-target border-2 border-error text-error rounded-xl font-label-md flex items-center justify-center gap-xs active:scale-95 transition-transform" onclick="logout()">
+    <span class="material-symbols-outlined">logout</span>
+    Log Out
+  </button>
+</main>
+
+<script>
+function openSidebar() {
+  document.getElementById('sidebar').classList.remove('-translate-x-full');
+  document.getElementById('sidebar-overlay').classList.remove('hidden');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebar-overlay').classList.add('hidden');
+}
+
+
+const API = "";
+const token = localStorage.getItem('student_token');
+if (!token) window.location.href = 'student_login.html';
+function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+
+async function loadAvatarInto(elId, endpoint) {
+  try {
+    const res = await fetch(`${API}${endpoint}`, { headers: { 'Authorization': `Bearer ${token}` } });
+    if (!res.ok) return false;
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const el = document.getElementById(elId);
+    if (el) {
+      el.style.backgroundImage = `url(${url})`;
+      el.style.backgroundSize = 'cover';
+      el.style.backgroundPosition = 'center';
+    }
+    return true;
+  } catch (e) { return false; }
+}
+
+async function load() {
+  const res = await fetch(`${API}/students/dashboard`, { headers: { 'Authorization': `Bearer ${token}` } });
+  if (res.status === 401) { logout(); return; }
+  const data = await res.json();
+
+  const initials = data.student_name.split(' ').map(n => n[0]).slice(0,2).join('').toUpperCase();
+  document.getElementById('sidebar-name').textContent = data.student_name;
+  document.getElementById('sidebar-reg').textContent = data.registration_number;
+  document.getElementById('sidebar-initials').textContent = initials;
+  document.getElementById('profile-initials').textContent = initials;
+  document.getElementById('profile-name').textContent = data.student_name;
+  document.getElementById('profile-reg').textContent = data.registration_number + (data.level ? ' · ' + data.level : '');
+  document.getElementById('enrollment-status').textContent = data.has_profile_picture ? 'Enrolled (with photo)' : 'Not yet enrolled';
+  if (data.level) document.getElementById('level-select').value = data.level;
+
+  if (data.has_profile_picture) {
+    const ok = await loadAvatarInto('profile-avatar', '/students/photo');
+    if (ok) document.getElementById('profile-initials').style.display = 'none';
+    loadAvatarInto('sidebar-initials-wrap', '/students/photo'); // no-op if not present, harmless
+  }
+}
+
+async function saveLevel() {
+  const level = document.getElementById('level-select').value;
+  const alertEl = document.getElementById('level-alert');
+  const fd = new FormData();
+  fd.append('level', level);
+  const res = await fetch(`${API}/students/profile`, { method: 'PUT', body: fd, headers: { 'Authorization': `Bearer ${token}` } });
+  const data = await res.json();
+  alertEl.classList.remove('hidden');
+  alertEl.textContent = res.ok ? 'Level updated successfully.' : (data.detail || 'Could not update level.');
+  alertEl.className = res.ok
+    ? 'bg-secondary-container text-on-secondary-container rounded-lg p-sm font-label-sm text-label-sm mb-md text-center'
+    : 'bg-error-container text-on-error-container rounded-lg p-sm font-label-sm text-label-sm mb-md text-center';
+}
+
+async function uploadPhoto() {
+  const input = document.getElementById('photo-input');
+  const alertEl = document.getElementById('photo-alert');
+  alertEl.classList.add('hidden');
+  if (!input.files || !input.files[0]) return;
+
+  const fd = new FormData();
+  fd.append('photo', input.files[0]);
+  const res = await fetch(`${API}/students/profile-picture`, { method: 'POST', body: fd, headers: { 'Authorization': `Bearer ${token}` } });
+  const data = await res.json();
+  if (!res.ok) {
+    alertEl.textContent = data.detail || 'Could not upload photo.';
+    alertEl.classList.remove('hidden');
+    return;
+  }
+  const ok = await loadAvatarInto('profile-avatar', '/students/photo');
+  if (ok) document.getElementById('profile-initials').style.display = 'none';
+}
+
+load();
+</script>
+</body>
+</html>

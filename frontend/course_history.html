@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<title>Attendance History - FAMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "surface-container-highest": "#e1e2e4",
+        "surface-container-high": "#e7e8ea",
+        "surface-container": "#edeef0",
+        "surface-container-low": "#f2f4f6",
+        "surface-container-lowest": "#ffffff",
+        "surface-dim": "#d9dadc",
+        "surface-bright": "#f8f9fb",
+        "surface-variant": "#e1e2e4",
+        "surface": "#f8f9fb",
+        "on-surface": "#191c1e",
+        "on-surface-variant": "#464650",
+        "on-background": "#191c1e",
+        "background": "#f7f8fa",
+        "outline": "#767681",
+        "outline-variant": "#c6c5d1",
+        "primary": "#06104c",
+        "on-primary": "#ffffff",
+        "primary-container": "#1e2761",
+        "on-primary-container": "#8790d0",
+        "primary-fixed": "#dfe0ff",
+        "primary-fixed-dim": "#bbc3ff",
+        "on-primary-fixed": "#0a144f",
+        "on-primary-fixed-variant": "#39427d",
+        "inverse-primary": "#bbc3ff",
+        "secondary": "#1b6d24",
+        "on-secondary": "#ffffff",
+        "secondary-container": "#a0f399",
+        "on-secondary-container": "#217128",
+        "secondary-fixed": "#a3f69c",
+        "secondary-fixed-dim": "#88d982",
+        "on-secondary-fixed": "#002204",
+        "on-secondary-fixed-variant": "#005312",
+        "tertiary": "#3b0002",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#620006",
+        "on-tertiary-container": "#ff5d54",
+        "tertiary-fixed": "#ffdad6",
+        "tertiary-fixed-dim": "#ffb4ac",
+        "on-tertiary-fixed": "#410003",
+        "on-tertiary-fixed-variant": "#93000e",
+        "error": "#ba1a1a",
+        "on-error": "#ffffff",
+        "error-container": "#ffdad6",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#2e3132",
+        "inverse-on-surface": "#f0f1f3",
+        "success-academic": "#1b6d24"
+      },
+      borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+      spacing: { base: "4px", xs: "8px", sm: "12px", md: "16px", lg: "24px", xl: "32px", "container-margin": "16px", gutter: "12px", "touch-target": "44px" },
+      fontFamily: {
+        "label-md": ["Inter"], "headline-lg-mobile": ["Inter"], "headline-md": ["Inter"],
+        "body-lg": ["Inter"], "headline-sm": ["Inter"], "display-lg": ["Inter"],
+        "label-sm": ["Inter"], "body-md": ["Inter"]
+      },
+      fontSize: {
+        "label-md": ["14px", {lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600"}],
+        "headline-lg-mobile": ["28px", {lineHeight: "36px", fontWeight: "700"}],
+        "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600"}],
+        "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}],
+        "headline-sm": ["20px", {lineHeight: "28px", fontWeight: "600"}],
+        "display-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700"}],
+        "label-sm": ["12px", {lineHeight: "16px", fontWeight: "500"}],
+        "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}]
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { font-family: 'Inter', sans-serif; background-color: #f7f8fa; -webkit-tap-highlight-color: transparent; }
+</style>
+
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-24">
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-margin h-touch-target bg-surface shadow-[0px_4px_16px_rgba(0,0,0,0.12)]">
+  <div class="flex items-center gap-md">
+    <button class="active:scale-95 transition-transform p-base hover:bg-surface-container-low rounded-full" onclick="history.length > 1 ? history.back() : window.location.href='courses.html'">
+      <span class="material-symbols-outlined text-primary">arrow_back</span>
+    </button>
+    <h1 class="font-headline-sm text-headline-sm text-primary" id="course-title">Course</h1>
+  </div>
+  <button class="flex items-center justify-center w-10 h-10" onclick="openSidebar()">
+    <span class="material-symbols-outlined text-primary">menu</span>
+  </button>
+</header>
+
+<div class="fixed inset-0 bg-black/40 z-[90] hidden" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<aside class="fixed top-0 left-0 h-full w-72 bg-surface-container-lowest z-[100] shadow-2xl -translate-x-full transition-transform duration-300 flex flex-col" id="sidebar">
+  <div class="p-lg border-b border-outline-variant flex items-center gap-sm bg-primary-container text-on-primary">
+    <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center font-headline-sm text-white" id="sidebar-initials">--</div>
+    <div class="overflow-hidden">
+      <p class="font-label-md text-label-md text-white truncate" id="sidebar-name">Student</p>
+      <p class="font-label-sm text-label-sm text-white/70 truncate" id="sidebar-reg">—</p>
+    </div>
+    <button class="ml-auto text-white/80 hover:text-white" onclick="closeSidebar()">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+  <nav class="flex-1 p-sm space-y-1 overflow-y-auto">
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="student_dashboard.html">
+      <span class="material-symbols-outlined">home</span><span class="font-label-md text-label-md">Home</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="courses.html">
+      <span class="material-symbols-outlined">menu_book</span><span class="font-label-md text-label-md">Courses</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="mark_attendance.html">
+      <span class="material-symbols-outlined">photo_camera</span><span class="font-label-md text-label-md">Mark Attendance</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="history.html">
+      <span class="material-symbols-outlined">history</span><span class="font-label-md text-label-md">History</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="profile.html">
+      <span class="material-symbols-outlined">person</span><span class="font-label-md text-label-md">Profile</span>
+    </a>
+  </nav>
+  <div class="p-sm border-t border-outline-variant">
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-error-container transition-colors text-error" href="#" onclick="logout()">
+      <span class="material-symbols-outlined">logout</span><span class="font-label-md text-label-md">Logout</span>
+    </a>
+  </div>
+</aside>
+
+
+<main class="mt-20 px-container-margin">
+  <section class="grid grid-cols-1 gap-md mb-lg">
+    <div class="bg-surface-container-lowest p-lg rounded-xl shadow-[0px_4px_16px_rgba(0,0,0,0.08)] border border-surface-variant/30 overflow-hidden relative">
+      <div class="flex items-start justify-between">
+        <div>
+          <p class="font-label-sm text-label-sm text-on-surface-variant mb-base">OVERALL ATTENDANCE</p>
+          <h2 class="font-display-lg text-display-lg text-secondary" id="course-pct">0%</h2>
+          <p class="font-body-md text-body-md text-on-surface mt-xs">You attended <span class="font-bold" id="course-attended-text">0 of 0</span> classes</p>
+        </div>
+        <div class="relative w-20 h-20">
+          <svg class="w-full h-full transform -rotate-90">
+            <circle class="text-surface-container-highest" cx="40" cy="40" fill="transparent" r="34" stroke="currentColor" stroke-width="8"></circle>
+            <circle class="text-secondary" cx="40" cy="40" fill="transparent" r="34" stroke="currentColor" stroke-dasharray="213.6" stroke-dashoffset="213.6" stroke-width="8" id="mini-ring" style="transition: stroke-dashoffset 0.6s;"></circle>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;" id="mini-ring-icon">check_circle</span>
+          </div>
+        </div>
+      </div>
+      <div class="absolute -bottom-4 -right-4 w-24 h-24 bg-secondary/5 rounded-full blur-xl"></div>
+    </div>
+  </section>
+
+  <div class="flex items-center justify-between mb-md">
+    <h3 class="font-headline-sm text-headline-sm">Session History</h3>
+  </div>
+
+  <div class="space-y-sm" id="session-log">
+    <p class="text-on-surface-variant text-center py-8">Loading sessions...</p>
+  </div>
+</main>
+
+<script>
+function openSidebar() {
+  document.getElementById('sidebar').classList.remove('-translate-x-full');
+  document.getElementById('sidebar-overlay').classList.remove('hidden');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebar-overlay').classList.add('hidden');
+}
+
+
+const API = "";
+const token = localStorage.getItem('student_token');
+if (!token) window.location.href = 'student_login.html';
+function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+
+const params = new URLSearchParams(window.location.search);
+const courseName = params.get('course');
+document.getElementById('course-title').textContent = courseName || 'Course';
+
+const MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+
+async function load() {
+  const res = await fetch(`${API}/students/dashboard`, { headers: { 'Authorization': `Bearer ${token}` } });
+  if (res.status === 401) { logout(); return; }
+  const data = await res.json();
+
+  document.getElementById('sidebar-name').textContent = data.student_name;
+  document.getElementById('sidebar-reg').textContent = data.registration_number;
+  document.getElementById('sidebar-initials').textContent = data.student_name.split(' ').map(n => n[0]).slice(0,2).join('').toUpperCase();
+
+  const course = data.courses.find(c => c.course_name === courseName);
+  const logDiv = document.getElementById('session-log');
+
+  if (!course) { logDiv.innerHTML = '<p class="text-on-surface-variant text-center py-8">Course not found.</p>'; return; }
+
+  document.getElementById('course-pct').textContent = course.percentage + '%';
+  document.getElementById('course-attended-text').textContent = `${course.attended} of ${course.total_sessions}`;
+
+  const circumference = 213.6;
+  const offset = circumference - (course.percentage / 100) * circumference;
+  const ring = document.getElementById('mini-ring');
+  ring.style.strokeDashoffset = offset;
+  const warn = course.percentage < 75;
+  ring.classList.toggle('text-secondary', !warn);
+  ring.classList.toggle('text-error', warn);
+  document.getElementById('mini-ring-icon').classList.toggle('text-secondary', !warn);
+  document.getElementById('mini-ring-icon').classList.toggle('text-error', warn);
+  document.getElementById('mini-ring-icon').textContent = warn ? 'warning' : 'check_circle';
+  document.querySelector('h2.text-display-lg').classList.toggle('text-secondary', !warn);
+  document.querySelector('h2.text-display-lg').classList.toggle('text-error', warn);
+
+  if (course.sessions.length === 0) {
+    logDiv.innerHTML = '<p class="text-on-surface-variant text-center py-8">No sessions recorded yet.</p>';
+    return;
+  }
+
+  logDiv.innerHTML = course.sessions.map(s => {
+    const d = new Date(s.date);
+    const mon = isNaN(d) ? '—' : MONTHS[d.getMonth()];
+    const day = isNaN(d) ? '—' : d.getDate();
+    const isPresent = s.status === 'Present';
+    const badgeClass = isPresent ? "bg-[#88d982]/10 text-[#005312]" : "bg-error/10 text-error";
+    return `
+    <div class="bg-surface-container-lowest p-md rounded-xl flex items-center justify-between border border-transparent hover:border-outline-variant/30 transition-all shadow-sm">
+      <div class="flex items-center gap-md">
+        <div class="w-12 h-12 rounded-lg bg-surface-container flex flex-col items-center justify-center text-on-surface-variant">
+          <span class="font-label-sm text-[10px] leading-tight">${mon}</span>
+          <span class="font-headline-sm text-headline-sm leading-tight">${day}</span>
+        </div>
+        <div>
+          <p class="font-label-md text-label-md text-on-surface">${s.date} Session</p>
+          <p class="font-label-sm text-label-sm text-outline">Class Session</p>
+        </div>
+      </div>
+      <div class="flex flex-col items-end gap-xs">
+        <span class="px-md py-1 ${badgeClass} rounded-full font-label-sm text-label-sm">${s.status}</span>
+        <span class="font-label-sm text-[10px] text-outline">${isPresent ? 'Marked at ' + s.time_marked : '—'}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+load();
+</script>
+</body>
+</html>

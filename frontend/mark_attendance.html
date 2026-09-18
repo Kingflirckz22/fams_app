@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<title>Mark Attendance -FAMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "surface-container-highest": "#e1e2e4",
+        "surface-container-high": "#e7e8ea",
+        "surface-container": "#edeef0",
+        "surface-container-low": "#f2f4f6",
+        "surface-container-lowest": "#ffffff",
+        "surface-dim": "#d9dadc",
+        "surface-bright": "#f8f9fb",
+        "surface-variant": "#e1e2e4",
+        "surface": "#f8f9fb",
+        "on-surface": "#191c1e",
+        "on-surface-variant": "#464650",
+        "on-background": "#191c1e",
+        "background": "#f7f8fa",
+        "outline": "#767681",
+        "outline-variant": "#c6c5d1",
+        "primary": "#06104c",
+        "on-primary": "#ffffff",
+        "primary-container": "#1e2761",
+        "on-primary-container": "#8790d0",
+        "primary-fixed": "#dfe0ff",
+        "primary-fixed-dim": "#bbc3ff",
+        "on-primary-fixed": "#0a144f",
+        "on-primary-fixed-variant": "#39427d",
+        "inverse-primary": "#bbc3ff",
+        "secondary": "#1b6d24",
+        "on-secondary": "#ffffff",
+        "secondary-container": "#a0f399",
+        "on-secondary-container": "#217128",
+        "secondary-fixed": "#a3f69c",
+        "secondary-fixed-dim": "#88d982",
+        "on-secondary-fixed": "#002204",
+        "on-secondary-fixed-variant": "#005312",
+        "tertiary": "#3b0002",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#620006",
+        "on-tertiary-container": "#ff5d54",
+        "tertiary-fixed": "#ffdad6",
+        "tertiary-fixed-dim": "#ffb4ac",
+        "on-tertiary-fixed": "#410003",
+        "on-tertiary-fixed-variant": "#93000e",
+        "error": "#ba1a1a",
+        "on-error": "#ffffff",
+        "error-container": "#ffdad6",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#2e3132",
+        "inverse-on-surface": "#f0f1f3",
+        "success-academic": "#1b6d24"
+      },
+      borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+      spacing: { base: "4px", xs: "8px", sm: "12px", md: "16px", lg: "24px", xl: "32px", "container-margin": "16px", gutter: "12px", "touch-target": "44px" },
+      fontFamily: {
+        "label-md": ["Inter"], "headline-lg-mobile": ["Inter"], "headline-md": ["Inter"],
+        "body-lg": ["Inter"], "headline-sm": ["Inter"], "display-lg": ["Inter"],
+        "label-sm": ["Inter"], "body-md": ["Inter"]
+      },
+      fontSize: {
+        "label-md": ["14px", {lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600"}],
+        "headline-lg-mobile": ["28px", {lineHeight: "36px", fontWeight: "700"}],
+        "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600"}],
+        "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}],
+        "headline-sm": ["20px", {lineHeight: "28px", fontWeight: "600"}],
+        "display-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700"}],
+        "label-sm": ["12px", {lineHeight: "16px", fontWeight: "500"}],
+        "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}]
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { font-family: 'Inter', sans-serif; background-color: #f7f8fa; -webkit-tap-highlight-color: transparent; }
+</style>
+
+<style>
+.face-frame {
+  border: 2px dashed rgba(255, 255, 255, 0.7);
+  width: min(72vw, 300px);
+  height: min(88vw, 360px);
+  border-radius: 50% / 45%;
+}
+  @keyframes scan { 0% { top: 10%; } 100% { top: 90%; } }
+  .scan-line { height: 2px; background: #bbc3ff; box-shadow: 0 0 15px #1e2761; animation: scan 3s ease-in-out infinite alternate; }
+  .success-checkmark { animation: checkmark 0.8s ease-in-out forwards; }
+  @keyframes checkmark { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
+  #camera-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; -webkit-transform: scaleX(-1); transform: scaleX(-1); }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen">
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-margin h-touch-target bg-surface shadow-[0px_4px_16px_rgba(0,0,0,0.12)]" id="page-header">
+  <button class="flex items-center justify-center w-10 h-10 -ml-2" onclick="openSidebar()">
+    <span class="material-symbols-outlined text-primary">menu</span>
+  </button>
+  <span class="font-headline-md text-headline-md font-bold text-primary">Mark Attendance</span>
+  <div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-label-md text-label-md" id="avatar-initials">--</div>
+</header>
+
+<div class="fixed inset-0 bg-black/40 z-[90] hidden" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<aside class="fixed top-0 left-0 h-full w-72 bg-surface-container-lowest z-[100] shadow-2xl -translate-x-full transition-transform duration-300 flex flex-col" id="sidebar">
+  <div class="p-lg border-b border-outline-variant flex items-center gap-sm bg-primary-container text-on-primary">
+    <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center font-headline-sm text-white" id="sidebar-initials">--</div>
+    <div class="overflow-hidden">
+      <p class="font-label-md text-label-md text-white truncate" id="sidebar-name">Student</p>
+      <p class="font-label-sm text-label-sm text-white/70 truncate" id="sidebar-reg">—</p>
+    </div>
+    <button class="ml-auto text-white/80 hover:text-white" onclick="closeSidebar()">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+  <nav class="flex-1 p-sm space-y-1 overflow-y-auto">
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="student_dashboard.html">
+      <span class="material-symbols-outlined">home</span><span class="font-label-md text-label-md">Home</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="courses.html">
+      <span class="material-symbols-outlined">menu_book</span><span class="font-label-md text-label-md">Courses</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="mark_attendance.html">
+      <span class="material-symbols-outlined">photo_camera</span><span class="font-label-md text-label-md">Mark Attendance</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="history.html">
+      <span class="material-symbols-outlined">history</span><span class="font-label-md text-label-md">History</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="profile.html">
+      <span class="material-symbols-outlined">person</span><span class="font-label-md text-label-md">Profile</span>
+    </a>
+  </nav>
+  <div class="p-sm border-t border-outline-variant">
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-error-container transition-colors text-error" href="#" onclick="logout()">
+      <span class="material-symbols-outlined">logout</span><span class="font-label-md text-label-md">Logout</span>
+    </a>
+  </div>
+</aside>
+
+
+<main class="pt-20 pb-24 px-container-margin max-w-lg mx-auto">
+  <section class="space-y-md" id="step1">
+    <div class="flex flex-col gap-xs mb-lg">
+      <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Available Sessions</h1>
+      <p class="text-on-surface-variant font-body-md">Select an ongoing session to join. Any enrolled face can join any active session.</p>
+    </div>
+
+    <div class="grid gap-md" id="session-cards">
+      <p class="text-on-surface-variant text-center py-8">Checking for active sessions...</p>
+    </div>
+
+    <div class="mt-xl p-lg bg-surface-container-low rounded-xl text-center hidden" id="empty-state">
+      <span class="material-symbols-outlined text-outline-variant text-[48px] mb-xs">qr_code_scanner</span>
+      <p class="font-label-md text-label-md text-on-surface-variant">No active sessions right now. Ask your lecturer to start one.</p>
+      <button class="mt-md text-primary font-label-md text-label-md underline" onclick="loadSessions()">Refresh</button>
+    </div>
+  </section>
+
+  <section class="hidden fixed inset-0 z-[60] bg-black" id="step2">
+    <div class="relative w-full h-full flex flex-col items-center">
+      <button class="absolute top-8 left-6 z-[70] w-10 h-10 rounded-full bg-black/40 text-white flex items-center justify-center backdrop-blur-sm" onclick="goBack()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+      <div class="absolute inset-0 overflow-hidden bg-black">
+        <video id="camera-video" autoplay muted playsinline></video>
+      </div>
+<div class="relative flex-1 flex flex-col items-center justify-center w-full px-lg text-center">
+  <div class="relative face-frame flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-x-0 scan-line z-10"></div>
+  </div>
+  <div class="mt-lg z-10">
+    <h2 class="font-headline-sm text-headline-sm text-white mb-xs" id="camera-course-title">Session</h2>
+    <p class="text-white/80 font-body-md" id="camera-status-text">Align your face within the frame and hold still</p>
+  </div>
+</div>
+      <div class="absolute bottom-12 w-full px-container-margin flex flex-col items-center gap-md">
+        <button class="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center group active:scale-90 transition-transform" id="capture-btn" onclick="processAttendance()">
+          <div class="w-16 h-16 rounded-full bg-white group-active:bg-primary-container transition-colors"></div>
+        </button>
+        <p class="text-white/60 font-label-sm tracking-widest uppercase" id="capture-label">Tap to Capture</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="hidden fixed inset-0 z-[100] bg-surface flex flex-col items-center justify-center px-container-margin text-center" id="step3">
+    <div class="hidden flex-col items-center" id="result-success">
+      <div class="w-24 h-24 rounded-full bg-success-academic/10 flex items-center justify-center mb-lg success-checkmark">
+        <span class="material-symbols-outlined text-[64px] text-success-academic" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+      </div>
+      <h2 class="font-display-lg text-display-lg text-success-academic mb-xs">Attendance Marked ✓</h2>
+      <p class="text-on-surface-variant font-body-lg mb-xl max-w-xs" id="success-message">Your presence has been securely logged in the system.</p>
+      <div class="w-full max-w-xs p-md bg-surface-container-low rounded-xl text-left border border-outline-variant/30">
+        <div class="flex justify-between items-center mb-xs">
+          <span class="text-label-sm text-on-surface-variant">Timestamp</span>
+          <span class="text-label-md text-on-surface" id="result-timestamp">--</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-label-sm text-on-surface-variant">Match Confidence</span>
+          <span class="text-label-md text-on-surface" id="result-confidence">--</span>
+        </div>
+      </div>
+      <a href="student_dashboard.html" class="mt-xl w-full max-w-xs h-touch-target bg-primary text-on-primary rounded-full font-label-md flex items-center justify-center gap-xs active:scale-95 transition-transform">
+        Return to Dashboard
+      </a>
+    </div>
+
+    <div class="hidden flex-col items-center" id="result-error">
+      <div class="w-24 h-24 rounded-full bg-error/10 flex items-center justify-center mb-lg">
+        <span class="material-symbols-outlined text-[64px] text-error">error_outline</span>
+      </div>
+      <h2 class="font-display-lg text-display-lg text-on-surface mb-xs">Verification Failed</h2>
+      <p class="text-on-surface-variant font-body-lg mb-xl max-w-xs" id="error-message">We couldn't verify your identity or network location.</p>
+      <button class="w-full max-w-xs h-touch-target bg-primary text-on-primary rounded-full font-label-md flex items-center justify-center gap-xs mb-md active:scale-95 transition-transform" onclick="retryCapture()">
+        <span class="material-symbols-outlined">refresh</span>
+        Try Again
+      </button>
+      <a href="student_dashboard.html" class="w-full max-w-xs h-touch-target border border-outline text-on-surface rounded-full font-label-md flex items-center justify-center active:scale-95 transition-transform">
+        Cancel
+      </a>
+    </div>
+  </section>
+</main>
+
+<script>
+function openSidebar() {
+  document.getElementById('sidebar').classList.remove('-translate-x-full');
+  document.getElementById('sidebar-overlay').classList.remove('hidden');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebar-overlay').classList.add('hidden');
+}
+
+
+const API = "";
+const token = localStorage.getItem('student_token');
+if (!token) window.location.href = 'student_login.html';
+const studentName = localStorage.getItem('student_name') || '';
+const initials = studentName.split(' ').map(n => n[0]).slice(0,2).join('').toUpperCase() || '--';
+document.getElementById('avatar-initials').textContent = initials;
+document.getElementById('sidebar-initials').textContent = initials;
+document.getElementById('sidebar-name').textContent = studentName;
+document.getElementById('sidebar-reg').textContent = localStorage.getItem('student_reg') || '';
+
+function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+
+let stream, activeSessionId, activeCourseName;
+
+async function loadSessions() {
+  const cardsDiv = document.getElementById('session-cards');
+  const emptyState = document.getElementById('empty-state');
+  cardsDiv.innerHTML = '<p class="text-on-surface-variant text-center py-8">Checking for active sessions...</p>';
+  emptyState.classList.add('hidden');
+
+  try {
+    const res = await fetch(`${API}/students/active-sessions`, { headers: { 'Authorization': `Bearer ${token}` } });
+    if (res.status === 401) { logout(); return; }
+    const data = await res.json();
+
+    if (!data.sessions || data.sessions.length === 0) {
+      cardsDiv.innerHTML = '';
+      emptyState.classList.remove('hidden');
+      return;
+    }
+
+    cardsDiv.innerHTML = data.sessions.map((s, i) => `
+      <button class="w-full text-left bg-surface-container-lowest p-md rounded-xl shadow-[0px_4px_16px_rgba(0,0,0,0.12)] border-l-4 ${i === 0 ? 'border-primary' : 'border-outline-variant opacity-80'} hover:bg-surface-container-low transition-colors active:scale-95 duration-200"
+        onclick="goToCamera(${s.session_id}, '${s.course_name.replace(/'/g, "\\'")}')">
+        <div class="flex justify-between items-start mb-xs">
+          <span class="font-headline-sm text-headline-sm ${i === 0 ? 'text-primary' : 'text-on-surface'}">${s.course_code}</span>
+          <span class="bg-secondary-container text-on-secondary-container px-xs py-[2px] rounded-full font-label-sm text-label-sm flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+            Started ${s.minutes_ago} min ago
+          </span>
+        </div>
+        <h3 class="font-label-md text-label-md text-on-surface mb-xs">${s.course_name}</h3>
+        <div class="flex items-center gap-xs text-on-surface-variant text-label-sm">
+          <span class="material-symbols-outlined text-[18px]">person</span>
+          <span>${s.lecturer_name}</span>
+        </div>
+      </button>
+    `).join('');
+  } catch (e) {
+    cardsDiv.innerHTML = '';
+    emptyState.classList.remove('hidden');
+  }
+}
+
+async function goToCamera(sessionId, courseName) {
+  activeSessionId = sessionId;
+  activeCourseName = courseName;
+  document.getElementById('camera-course-title').textContent = courseName;
+  document.getElementById('camera-status-text').textContent = 'Align your face within the frame and hold still';
+  goToStep(2);
+
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+    document.getElementById('camera-video').srcObject = stream;
+  } catch (e) {
+    document.getElementById('camera-status-text').textContent = 'Camera access denied.';
+  }
+}
+
+function goToStep(stepNumber) {
+  document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+  document.getElementById('step' + stepNumber).classList.remove('hidden');
+  const header = document.getElementById('page-header');
+  if (stepNumber === 2 || stepNumber === 3) {
+    header.classList.add('hidden');
+  } else {
+    header.classList.remove('hidden');
+  }
+}
+
+function goBack() {
+  if (stream) stream.getTracks().forEach(t => t.stop());
+  goToStep(1);
+}
+
+function retryCapture() {
+  document.getElementById('result-error').classList.add('hidden');
+  document.getElementById('result-error').classList.remove('flex');
+  goToCamera(activeSessionId, activeCourseName);
+}
+
+async function processAttendance() {
+  const captureBtn = document.getElementById('capture-btn');
+  const captureLabel = document.getElementById('capture-label');
+  captureBtn.disabled = true;
+  captureLabel.textContent = 'Processing...';
+
+  const video = document.getElementById('camera-video');
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.translate(canvas.width, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(video, 0, 0);
+
+  canvas.toBlob(async (blob) => {
+    const fd = new FormData();
+    fd.append('photo', blob, 'attendance.jpg');
+    fd.append('session_id', activeSessionId);
+
+    try {
+      const res = await fetch(`${API}/attendance/mark`, {
+        method: 'POST', body: fd, headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+
+      if (stream) stream.getTracks().forEach(t => t.stop());
+      captureBtn.disabled = false;
+      captureLabel.textContent = 'Tap to Capture';
+
+      if (!res.ok) {
+        document.getElementById('error-message').textContent = data.detail || 'Verification failed. Please try again.';
+        goToStep(3);
+        document.getElementById('result-success').classList.add('hidden');
+        document.getElementById('result-success').classList.remove('flex');
+        document.getElementById('result-error').classList.remove('hidden');
+        document.getElementById('result-error').classList.add('flex');
+        return;
+      }
+
+      const now = new Date();
+      document.getElementById('success-message').textContent = `Your presence for ${activeCourseName} has been securely logged in the system.`;
+      document.getElementById('result-timestamp').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ', ' + now.toLocaleDateString([], { month: 'short', day: 'numeric' });
+      document.getElementById('result-confidence').textContent = data.similarity ? Math.round(data.similarity * 100) + '%' : 'Verified';
+      goToStep(3);
+      document.getElementById('result-error').classList.add('hidden');
+      document.getElementById('result-error').classList.remove('flex');
+      document.getElementById('result-success').classList.remove('hidden');
+      document.getElementById('result-success').classList.add('flex');
+    } catch (e) {
+      if (stream) stream.getTracks().forEach(t => t.stop());
+      captureBtn.disabled = false;
+      captureLabel.textContent = 'Tap to Capture';
+      document.getElementById('error-message').textContent = "We couldn't verify your network location. Ensure you're on the Campus Wi-Fi.";
+      goToStep(3);
+      document.getElementById('result-success').classList.add('hidden');
+      document.getElementById('result-success').classList.remove('flex');
+      document.getElementById('result-error').classList.remove('hidden');
+      document.getElementById('result-error').classList.add('flex');
+    }
+  }, 'image/jpeg', 0.9);
+}
+
+loadSessions();
+</script>
+</body>
+</html>

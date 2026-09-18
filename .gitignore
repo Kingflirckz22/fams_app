@@ -1,0 +1,10 @@
+.env
+schl-pro/
+__pycache__/
+*.pyc
+attendance_files/
+*.db
+.vscode/
+node_modules/
+uploads/
+migrate_db.py

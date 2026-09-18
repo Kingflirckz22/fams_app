@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<title>Face Registration - FAMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js" crossorigin="anonymous"></script>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "surface-container-highest": "#e1e2e4",
+        "surface-container-high": "#e7e8ea",
+        "surface-container": "#edeef0",
+        "surface-container-low": "#f2f4f6",
+        "surface-container-lowest": "#ffffff",
+        "surface-dim": "#d9dadc",
+        "surface-bright": "#f8f9fb",
+        "surface-variant": "#e1e2e4",
+        "surface": "#f8f9fb",
+        "on-surface": "#191c1e",
+        "on-surface-variant": "#464650",
+        "on-background": "#191c1e",
+        "background": "#f7f8fa",
+        "outline": "#767681",
+        "outline-variant": "#c6c5d1",
+        "primary": "#06104c",
+        "on-primary": "#ffffff",
+        "primary-container": "#1e2761",
+        "on-primary-container": "#8790d0",
+        "primary-fixed": "#dfe0ff",
+        "primary-fixed-dim": "#bbc3ff",
+        "on-primary-fixed": "#0a144f",
+        "on-primary-fixed-variant": "#39427d",
+        "inverse-primary": "#bbc3ff",
+        "secondary": "#1b6d24",
+        "on-secondary": "#ffffff",
+        "secondary-container": "#a0f399",
+        "on-secondary-container": "#217128",
+        "secondary-fixed": "#a3f69c",
+        "secondary-fixed-dim": "#88d982",
+        "on-secondary-fixed": "#002204",
+        "on-secondary-fixed-variant": "#005312",
+        "tertiary": "#3b0002",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#620006",
+        "on-tertiary-container": "#ff5d54",
+        "tertiary-fixed": "#ffdad6",
+        "tertiary-fixed-dim": "#ffb4ac",
+        "on-tertiary-fixed": "#410003",
+        "on-tertiary-fixed-variant": "#93000e",
+        "error": "#ba1a1a",
+        "on-error": "#ffffff",
+        "error-container": "#ffdad6",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#2e3132",
+        "inverse-on-surface": "#f0f1f3",
+        "success-academic": "#1b6d24"
+      },
+      borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+      spacing: { base: "4px", xs: "8px", sm: "12px", md: "16px", lg: "24px", xl: "32px", "container-margin": "16px", gutter: "12px", "touch-target": "44px" },
+      fontFamily: {
+        "label-md": ["Inter"], "headline-lg-mobile": ["Inter"], "headline-md": ["Inter"],
+        "body-lg": ["Inter"], "headline-sm": ["Inter"], "display-lg": ["Inter"],
+        "label-sm": ["Inter"], "body-md": ["Inter"]
+      },
+      fontSize: {
+        "label-md": ["14px", {lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600"}],
+        "headline-lg-mobile": ["28px", {lineHeight: "36px", fontWeight: "700"}],
+        "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600"}],
+        "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}],
+        "headline-sm": ["20px", {lineHeight: "28px", fontWeight: "600"}],
+        "display-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700"}],
+        "label-sm": ["12px", {lineHeight: "16px", fontWeight: "500"}],
+        "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}]
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { font-family: 'Inter', sans-serif; background-color: #f7f8fa; -webkit-tap-highlight-color: transparent; }
+</style>
+<style>
+  .scan-corner { position: absolute; width: 24px; height: 24px; border-color: #1E2761; }
+  #progress-ring-circle { transition: stroke-dashoffset 1s linear; }
+  #pose-indicator-dot { transition: background-color 0.2s ease; }
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-margin h-touch-target bg-surface shadow-sm">
+  <a href="student_dashboard.html" class="flex items-center gap-xs">
+    <span class="material-symbols-outlined text-primary" style="font-size: 24px;">school</span>
+    <h1 class="font-headline-md text-headline-md font-bold text-primary">FAMS</h1>
+  </a>
+  <div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden border border-outline-variant">
+    <span class="material-symbols-outlined text-on-surface-variant text-[20px]">account_circle</span>
+  </div>
+</header>
+
+<main class="flex-grow pt-20 pb-32 px-container-margin max-w-md mx-auto w-full">
+  <section class="mb-lg bg-surface-container-lowest rounded-xl p-md shadow-sm">
+    <h2 class="font-headline-sm text-headline-sm text-primary text-center mb-md">Face Capture Tips</h2>
+    <div class="grid grid-cols-3 gap-md text-center">
+      <div class="flex flex-col items-center gap-1">
+        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary"><span class="material-symbols-outlined">wb_sunny</span></div>
+        <span class="font-label-sm text-label-sm text-on-surface-variant">Good Lighting</span>
+      </div>
+      <div class="flex flex-col items-center gap-1">
+        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary"><span class="material-symbols-outlined">screen_rotation</span></div>
+        <span class="font-label-sm text-label-sm text-on-surface-variant">Hold Steady</span>
+      </div>
+      <div class="flex flex-col items-center gap-1">
+        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary"><span class="material-symbols-outlined">sync</span></div>
+        <span class="font-label-sm text-label-sm text-on-surface-variant">Turn Head</span>
+      </div>
+      <div class="flex flex-col items-center gap-1">
+        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary"><span class="material-symbols-outlined">visibility_off</span></div>
+        <span class="font-label-sm text-label-sm text-on-surface-variant">No Glasses</span>
+      </div>
+      <div class="flex flex-col items-center gap-1">
+        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary"><span class="material-symbols-outlined">visibility</span></div>
+        <span class="font-label-sm text-label-sm text-on-surface-variant">Eye Level</span>
+      </div>
+      <div class="flex flex-col items-center gap-1">
+        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary"><span class="material-symbols-outlined">face</span></div>
+        <span class="font-label-sm text-label-sm text-on-surface-variant">Face Visible</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative w-full aspect-square rounded-xl overflow-hidden bg-black shadow-lg mb-lg">
+    <video autoplay class="w-full h-full object-cover -scale-x-100" id="video-preview" muted playsinline></video>
+    <div class="absolute inset-6 pointer-events-none">
+      <div class="scan-corner top-0 left-0 border-t-4 border-l-4 rounded-tl-lg"></div>
+      <div class="scan-corner top-0 right-0 border-t-4 border-r-4 rounded-tr-lg"></div>
+      <div class="scan-corner bottom-0 left-0 border-b-4 border-l-4 rounded-bl-lg"></div>
+      <div class="scan-corner bottom-0 right-0 border-b-4 border-r-4 rounded-br-lg"></div>
+    </div>
+    <div class="absolute inset-0 hidden items-center justify-center bg-black/50" id="processing-overlay">
+      <div class="text-center text-white">
+        <span class="material-symbols-outlined animate-spin text-4xl">progress_activity</span>
+        <p class="font-label-md text-label-md mt-2">Processing...</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="flex flex-col items-center gap-md">
+    <div class="relative w-28 h-28 flex items-center justify-center">
+      <svg class="w-full h-full -rotate-90" viewbox="0 0 100 100">
+        <circle class="text-surface-container-highest" cx="50" cy="50" fill="transparent" r="45" stroke="currentColor" stroke-width="6"></circle>
+        <circle class="text-primary" cx="50" cy="50" fill="transparent" id="progress-ring-circle" r="45" stroke="currentColor" stroke-dasharray="283" stroke-dashoffset="283" stroke-linecap="round" stroke-width="6"></circle>
+      </svg>
+      <span class="absolute font-headline-md text-headline-md text-primary" id="timer-text">0s</span>
+    </div>
+    <p class="font-headline-sm text-headline-sm text-primary text-center mb-xs" id="pose-prompt">Look straight ahead</p>
+    <div class="flex items-center justify-center gap-1" id="pose-indicator-wrap">
+      <span class="w-2.5 h-2.5 rounded-full bg-outline-variant" id="pose-indicator-dot"></span>
+      <span class="font-label-sm text-label-sm text-on-surface-variant" id="pose-indicator-text">Position your face in frame</span>
+    </div>
+    <p class="font-label-md text-label-md text-on-surface-variant" id="status-label">Recording progress</p>
+
+    <button class="w-16 h-16 rounded-full bg-error flex items-center justify-center shadow-lg active:scale-90 transition-transform border-4 border-white" id="record-btn" onclick="startRecording()">
+      <span class="w-6 h-6 rounded-full bg-white"></span>
+    </button>
+    <p class="font-label-md text-label-md text-primary font-bold" id="tap-label">TAP TO RECORD</p>
+
+    <div id="error-alert" class="hidden bg-error-container text-on-error-container rounded-lg p-sm font-label-sm text-label-sm w-full text-center"></div>
+  </div>
+</main>
+
+<script>
+const API = "";
+const token = localStorage.getItem('student_token');
+if (!token) window.location.href = 'student_login.html';
+
+let stream, recorder, chunks = [];
+const SECONDS_PER_POSE = 2;
+const RECORD_SECONDS = SECONDS_PER_POSE * 5; // 5 poses x 2s each = 10s total
+const circumference = 283;
+
+const POSE_PROMPTS = [
+  "Look straight ahead",
+  "Turn your head slightly LEFT",
+  "Turn your head slightly RIGHT",
+  "Tilt your head UP a little",
+  "Tilt your head DOWN a little"
+];
+
+
+let faceDetection = null;
+let currentYaw = 0, currentPitch = 0, faceInFrame = false;
+let detectTimer = null;
+
+function setupFaceTracking() {
+  faceDetection = new FaceDetection({
+    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/${file}`
+  });
+  faceDetection.setOptions({ model: 'short', minDetectionConfidence: 0.5 });
+  faceDetection.onResults(onFaceResults);
+
+  const videoEl = document.getElementById('video-preview');
+  detectTimer = setInterval(() => {
+    if (videoEl.readyState >= 2) {
+      faceDetection.send({ image: videoEl });
+    }
+  }, 150);
+}
+
+function onFaceResults(results) {
+  if (!results.detections || results.detections.length === 0) {
+    faceInFrame = false;
+    return;
+  }
+  const kp = results.detections[0].landmarks;
+  if (!kp || kp.length < 4) { faceInFrame = false; return; }
+
+  const rightEye = kp[0], leftEye = kp[1], nose = kp[2], mouth = kp[3];
+  const eyeMidX = (rightEye.x + leftEye.x) / 2;
+  const eyeMidY = (rightEye.y + leftEye.y) / 2;
+  const eyeDist = Math.abs(leftEye.x - rightEye.x) || 0.0001;
+  const faceHeight = Math.abs(mouth.y - eyeMidY) || 0.0001;
+
+  const rawYaw = (nose.x - eyeMidX) / eyeDist;
+  const rawPitch = (nose.y - eyeMidY) / faceHeight;
+
+  currentYaw = -rawYaw;   // (*) flip this sign if left/right feels reversed
+  currentPitch = rawPitch;
+  faceInFrame = true;
+}
+
+// Per-prompt check: given deviation-from-baseline (dy = yaw, dp = pitch),
+// is the user correctly following prompt index i?
+const YAW_TURN_THRESHOLD = 0.09;
+const PITCH_TILT_THRESHOLD = 0.05;
+const CENTER_TOLERANCE = 0.07;
+
+const POSE_CHECKS = [
+  (dy, dp) => Math.abs(dy) < CENTER_TOLERANCE && Math.abs(dp) < CENTER_TOLERANCE,  // straight
+  (dy, dp) => dy > YAW_TURN_THRESHOLD,                                            // left
+  (dy, dp) => dy < -YAW_TURN_THRESHOLD,                                           // right
+  (dy, dp) => dp < -PITCH_TILT_THRESHOLD,                                         // up
+  (dy, dp) => dp > PITCH_TILT_THRESHOLD                                           // down
+];
+
+function setPoseIndicator(state, text) {
+  const dot = document.getElementById('pose-indicator-dot');
+  const label = document.getElementById('pose-indicator-text');
+  label.textContent = text;
+  dot.className = 'w-2.5 h-2.5 rounded-full ' + (
+    state === 'ok' ? 'bg-secondary' :
+    state === 'wait' ? 'bg-outline-variant' :
+    'bg-error/70'
+  );
+}
+
+async function initCamera() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+    document.getElementById('video-preview').srcObject = stream;
+    setupFaceTracking();
+  } catch (e) {
+    document.getElementById('error-alert').textContent = 'Camera access denied. Please allow camera permissions.';
+    document.getElementById('error-alert').classList.remove('hidden');
+  }
+}
+initCamera();
+
+function updatePosePrompt(secondIndex) {
+  const el = document.getElementById('pose-prompt');
+  const poseIndex = Math.min(Math.floor(secondIndex / SECONDS_PER_POSE), POSE_PROMPTS.length - 1);
+  if (el) el.textContent = POSE_PROMPTS[poseIndex] || POSE_PROMPTS[0];
+}
+
+function startRecording() {
+  if (!stream) return;
+  chunks = [];
+  const recordBtn = document.getElementById('record-btn');
+  const tapLabel = document.getElementById('tap-label');
+  const statusLabel = document.getElementById('status-label');
+  const timerText = document.getElementById('timer-text');
+  const ring = document.getElementById('progress-ring-circle');
+  const errorAlert = document.getElementById('error-alert');
+
+  errorAlert.classList.add('hidden');
+  recordBtn.disabled = true;
+  recordBtn.classList.add('opacity-50');
+  tapLabel.textContent = 'RECORDING...';
+  statusLabel.textContent = 'Look naturally at the camera';
+
+  let elapsed = 0;
+  ring.style.strokeDashoffset = circumference;
+  timerText.textContent = '0s';
+  updatePosePrompt(0);
+
+  // Calibration: average the first ~900ms of samples (while the
+  // "Look straight ahead" prompt is showing) into a centered baseline.
+  let baselineYaw = 0, baselinePitch = 0, baselineReady = false;
+  const calibSamples = [];
+
+  const poseCheckInterval = setInterval(() => {
+    if (!faceInFrame) {
+      setPoseIndicator('bad', 'No face detected');
+      return;
+    }
+    if (!baselineReady) {
+      calibSamples.push({ yaw: currentYaw, pitch: currentPitch });
+      setPoseIndicator('wait', 'Centering...');
+      if (calibSamples.length >= 6) {
+        baselineYaw = calibSamples.reduce((s, p) => s + p.yaw, 0) / calibSamples.length;
+        baselinePitch = calibSamples.reduce((s, p) => s + p.pitch, 0) / calibSamples.length;
+        baselineReady = true;
+      }
+      return;
+    }
+    const dy = currentYaw - baselineYaw;
+    const dp = currentPitch - baselinePitch;
+    const idx = Math.min(Math.floor(elapsed / SECONDS_PER_POSE), POSE_CHECKS.length - 1);
+    const ok = POSE_CHECKS[idx](dy, dp);
+    setPoseIndicator(ok ? 'ok' : 'bad', ok ? 'Aligned ✓' : 'Adjust pose');
+  }, 150);
+
+  const interval = setInterval(() => {
+    elapsed++;
+    timerText.textContent = elapsed + 's';
+    const offset = circumference - (elapsed / RECORD_SECONDS) * circumference;
+    ring.style.strokeDashoffset = offset;
+    updatePosePrompt(elapsed);
+    if (elapsed >= RECORD_SECONDS) {
+      clearInterval(interval);
+      clearInterval(poseCheckInterval);
+      document.getElementById('pose-prompt').textContent = 'Processing...';
+      setPoseIndicator('wait', '');
+      stopRecording();
+    }
+  }, 1000);
+
+  try {
+    recorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+  } catch (e) {
+    recorder = new MediaRecorder(stream);
+  }
+  recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+  recorder.start();
+}
+
+async function stopRecording() {
+  recorder.stop();
+  const statusLabel = document.getElementById('status-label');
+  const tapLabel = document.getElementById('tap-label');
+  const processingOverlay = document.getElementById('processing-overlay');
+  const errorAlert = document.getElementById('error-alert');
+
+  recorder.onstop = async () => {
+    statusLabel.textContent = 'Uploading and analysing...';
+    tapLabel.textContent = '';
+    processingOverlay.classList.remove('hidden');
+    processingOverlay.classList.add('flex');
+
+    const blob = new Blob(chunks, { type: 'video/webm' });
+    const fd = new FormData();
+    fd.append('video', blob, 'enrollment.webm');
+
+    try {
+      const res = await fetch(`${API}/students/enroll-face`, {
+        method: 'POST', body: fd, headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      processingOverlay.classList.add('hidden');
+      processingOverlay.classList.remove('flex');
+
+      if (!res.ok) {
+        errorAlert.textContent = data.detail || 'Enrollment failed. Please try again.';
+        errorAlert.classList.remove('hidden');
+        resetUI();
+        return;
+      }
+      statusLabel.textContent = 'Face enrolled successfully!';
+      document.getElementById('timer-text').textContent = '✓';
+      document.getElementById('progress-ring-circle').classList.remove('text-primary');
+      document.getElementById('progress-ring-circle').classList.add('text-secondary');
+      setTimeout(() => window.location.href = 'student_dashboard.html', 1500);
+    } catch (e) {
+      processingOverlay.classList.add('hidden');
+      processingOverlay.classList.remove('flex');
+      errorAlert.textContent = 'Upload failed. Check your connection and try again.';
+      errorAlert.classList.remove('hidden');
+      resetUI();
+    }
+  };
+}
+
+function resetUI() {
+  const recordBtn = document.getElementById('record-btn');
+  const tapLabel = document.getElementById('tap-label');
+  const statusLabel = document.getElementById('status-label');
+  recordBtn.disabled = false;
+  recordBtn.classList.remove('opacity-50');
+  tapLabel.textContent = 'TAP TO RECORD';
+  statusLabel.textContent = 'Recording progress';
+  document.getElementById('timer-text').textContent = '0s';
+  document.getElementById('progress-ring-circle').style.strokeDashoffset = circumference;
+  updatePosePrompt(0);
+  setPoseIndicator('wait', 'Position your face in frame');
+}
+</script>
+</body>
+</html>

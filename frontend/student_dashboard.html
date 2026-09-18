@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<title>Student Dashboard - FAMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "surface-container-highest": "#e1e2e4",
+        "surface-container-high": "#e7e8ea",
+        "surface-container": "#edeef0",
+        "surface-container-low": "#f2f4f6",
+        "surface-container-lowest": "#ffffff",
+        "surface-dim": "#d9dadc",
+        "surface-bright": "#f8f9fb",
+        "surface-variant": "#e1e2e4",
+        "surface": "#f8f9fb",
+        "on-surface": "#191c1e",
+        "on-surface-variant": "#464650",
+        "on-background": "#191c1e",
+        "background": "#f7f8fa",
+        "outline": "#767681",
+        "outline-variant": "#c6c5d1",
+        "primary": "#06104c",
+        "on-primary": "#ffffff",
+        "primary-container": "#1e2761",
+        "on-primary-container": "#8790d0",
+        "primary-fixed": "#dfe0ff",
+        "primary-fixed-dim": "#bbc3ff",
+        "on-primary-fixed": "#0a144f",
+        "on-primary-fixed-variant": "#39427d",
+        "inverse-primary": "#bbc3ff",
+        "secondary": "#1b6d24",
+        "on-secondary": "#ffffff",
+        "secondary-container": "#a0f399",
+        "on-secondary-container": "#217128",
+        "secondary-fixed": "#a3f69c",
+        "secondary-fixed-dim": "#88d982",
+        "on-secondary-fixed": "#002204",
+        "on-secondary-fixed-variant": "#005312",
+        "tertiary": "#3b0002",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#620006",
+        "on-tertiary-container": "#ff5d54",
+        "tertiary-fixed": "#ffdad6",
+        "tertiary-fixed-dim": "#ffb4ac",
+        "on-tertiary-fixed": "#410003",
+        "on-tertiary-fixed-variant": "#93000e",
+        "error": "#ba1a1a",
+        "on-error": "#ffffff",
+        "error-container": "#ffdad6",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#2e3132",
+        "inverse-on-surface": "#f0f1f3",
+        "success-academic": "#1b6d24"
+      },
+      borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+      spacing: { base: "4px", xs: "8px", sm: "12px", md: "16px", lg: "24px", xl: "32px", "container-margin": "16px", gutter: "12px", "touch-target": "44px" },
+      fontFamily: {
+        "label-md": ["Inter"], "headline-lg-mobile": ["Inter"], "headline-md": ["Inter"],
+        "body-lg": ["Inter"], "headline-sm": ["Inter"], "display-lg": ["Inter"],
+        "label-sm": ["Inter"], "body-md": ["Inter"]
+      },
+      fontSize: {
+        "label-md": ["14px", {lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600"}],
+        "headline-lg-mobile": ["28px", {lineHeight: "36px", fontWeight: "700"}],
+        "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600"}],
+        "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}],
+        "headline-sm": ["20px", {lineHeight: "28px", fontWeight: "600"}],
+        "display-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700"}],
+        "label-sm": ["12px", {lineHeight: "16px", fontWeight: "500"}],
+        "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}]
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { font-family: 'Inter', sans-serif; background-color: #f7f8fa; -webkit-tap-highlight-color: transparent; }
+</style>
+
+<style>
+  .circular-progress { background: conic-gradient(var(--progress-color) calc(var(--value) * 1%), #e1e2e4 0); }
+</style>
+</head>
+<body class="bg-background font-body-md text-on-background">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background overflow-x-hidden pb-16">
+<div class="flex items-center bg-surface p-4 pb-2 justify-between sticky top-0 z-50 border-b border-outline-variant">
+  <button class="text-on-background flex size-12 shrink-0 items-center justify-center" onclick="openSidebar()">
+    <span class="material-symbols-outlined">menu</span>
+  </button>
+  <h2 class="text-on-background text-headline-sm font-bold leading-tight tracking-tight flex-1 text-center">Student Dashboard</h2>
+  <div class="w-12 h-12 flex items-center justify-center">
+    <div class="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-label-md" id="avatar-initials">--</div>
+  </div>
+</div>
+
+<div class="fixed inset-0 bg-black/40 z-[90] hidden" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<aside class="fixed top-0 left-0 h-full w-72 bg-surface-container-lowest z-[100] shadow-2xl -translate-x-full transition-transform duration-300 flex flex-col" id="sidebar">
+  <div class="p-lg border-b border-outline-variant flex items-center gap-sm bg-primary-container text-on-primary">
+    <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center font-headline-sm text-white" id="sidebar-initials">--</div>
+    <div class="overflow-hidden">
+      <p class="font-label-md text-label-md text-white truncate" id="sidebar-name">Student</p>
+      <p class="font-label-sm text-label-sm text-white/70 truncate" id="sidebar-reg">—</p>
+    </div>
+    <button class="ml-auto text-white/80 hover:text-white" onclick="closeSidebar()">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+  <nav class="flex-1 p-sm space-y-1 overflow-y-auto">
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="student_dashboard.html">
+      <span class="material-symbols-outlined">home</span><span class="font-label-md text-label-md">Home</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="courses.html">
+      <span class="material-symbols-outlined">menu_book</span><span class="font-label-md text-label-md">Courses</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="mark_attendance.html">
+      <span class="material-symbols-outlined">photo_camera</span><span class="font-label-md text-label-md">Mark Attendance</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="history.html">
+      <span class="material-symbols-outlined">history</span><span class="font-label-md text-label-md">History</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="profile.html">
+      <span class="material-symbols-outlined">person</span><span class="font-label-md text-label-md">Profile</span>
+    </a>
+  </nav>
+  <div class="p-sm border-t border-outline-variant">
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-error-container transition-colors text-error" href="#" onclick="logout()">
+      <span class="material-symbols-outlined">logout</span><span class="font-label-md text-label-md">Logout</span>
+    </a>
+  </div>
+</aside>
+
+
+<div class="p-4">
+  <div class="relative overflow-hidden rounded-xl bg-primary-container p-6 text-on-primary shadow-lg" id="hero-card">
+    <div class="relative z-10 flex flex-col gap-1">
+      <p class="text-on-primary-container text-label-sm uppercase tracking-wider">Active Student</p>
+      <h1 class="text-display-lg font-bold leading-tight" id="student-name">Loading...</h1>
+      <p class="text-on-primary-container text-body-md opacity-90" id="student-reg">—</p>
+    </div>
+    <div class="relative z-10 mt-6 grid grid-cols-3 gap-4 border-t border-white/10 pt-6">
+      <div class="flex flex-col">
+        <span class="text-on-primary-container text-label-sm">Classes Held</span>
+        <span class="text-headline-md font-bold text-white" id="stat-held">0</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-on-primary-container text-label-sm">Present</span>
+        <span class="text-headline-md font-bold text-white" id="stat-present">0</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-on-primary-container text-label-sm">Absent</span>
+        <span class="text-headline-md font-bold text-white" id="stat-absent">0</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="px-4 py-2">
+  <div class="flex flex-col items-center justify-center rounded-xl bg-surface-container-lowest p-8 shadow-sm border border-outline-variant">
+    <div class="relative flex items-center justify-center w-48 h-48 rounded-full circular-progress" id="progress-ring" style="--value: 0; --progress-color: #1b6d24;">
+      <div class="absolute inset-4 rounded-full bg-surface-container-lowest flex flex-col items-center justify-center">
+        <span class="text-display-lg font-black text-on-background" id="overall-pct">0%</span>
+        <span class="text-label-sm text-on-surface-variant font-semibold">OVERALL</span>
+      </div>
+    </div>
+    <div class="mt-6 text-center">
+      <h3 class="text-headline-sm font-bold text-on-background" id="progress-headline">Loading your progress...</h3>
+      <p class="text-body-md text-on-surface-variant" id="progress-subtext"></p>
+    </div>
+  </div>
+</div>
+
+<div class="px-4 py-6">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-headline-sm font-bold text-on-background">My Courses</h3>
+    <a href="courses.html" class="text-primary font-label-md text-label-md">View All</a>
+  </div>
+  <div class="flex flex-col gap-4" id="course-list">
+    <p class="text-on-surface-variant text-center py-8">Loading courses...</p>
+  </div>
+</div>
+</div>
+
+<div class="fixed bottom-4 left-0 right-0 p-4 z-40">
+  <a href="mark_attendance.html" class="w-full h-14 bg-primary text-on-primary rounded-xl font-bold flex items-center justify-center gap-2 shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-transform max-w-md mx-auto">
+    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
+    Mark Attendance
+  </a>
+</div>
+
+<script>
+function openSidebar() {
+  document.getElementById('sidebar').classList.remove('-translate-x-full');
+  document.getElementById('sidebar-overlay').classList.remove('hidden');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebar-overlay').classList.add('hidden');
+}
+
+
+const API = "";
+const token = localStorage.getItem('student_token');
+if (!token) window.location.href = 'student_login.html';
+
+function logout() {
+  localStorage.clear();
+  window.location.href = 'index.html';
+}
+
+async function loadDashboard() {
+  try {
+    const res = await fetch(`${API}/students/dashboard`, { headers: { 'Authorization': `Bearer ${token}` } });
+    const data = await res.json();
+    if (res.status === 401) { logout(); return; }
+    if (!res.ok) { throw new Error(data.detail || 'Failed to load'); }
+
+    document.getElementById('student-name').textContent = data.student_name;
+    document.getElementById('student-reg').textContent = `Registration: ${data.registration_number}`;
+    document.getElementById('sidebar-name').textContent = data.student_name;
+    document.getElementById('sidebar-reg').textContent = data.registration_number;
+    const initials = data.student_name.split(' ').map(n => n[0]).slice(0,2).join('').toUpperCase();
+    document.getElementById('sidebar-initials').textContent = initials;
+    document.getElementById('avatar-initials').textContent = initials;
+
+    let totalHeld = 0, totalPresent = 0, totalAbsent = 0;
+    data.courses.forEach(c => {
+      totalHeld += c.total_sessions;
+      totalPresent += c.attended;
+      totalAbsent += c.missed;
+    });
+    const overallPct = totalHeld > 0 ? Math.round((totalPresent / totalHeld) * 100) : 0;
+
+    document.getElementById('stat-held').textContent = totalHeld;
+    document.getElementById('stat-present').textContent = totalPresent;
+    document.getElementById('stat-absent').textContent = totalAbsent;
+
+    const ring = document.getElementById('progress-ring');
+    ring.style.setProperty('--value', overallPct);
+    ring.style.setProperty('--progress-color', overallPct < 70 ? '#ba1a1a' : '#1b6d24');
+    document.getElementById('overall-pct').textContent = overallPct + '%';
+
+    const firstName = data.student_name.split(' ')[0];
+    if (totalHeld === 0) {
+      document.getElementById('progress-headline').textContent = `Welcome, ${firstName}!`;
+      document.getElementById('progress-subtext').textContent = 'No attendance recorded yet.';
+    } else if (overallPct >= 75) {
+      document.getElementById('progress-headline').textContent = `Great progress, ${firstName}!`;
+      document.getElementById('progress-subtext').textContent = `You are ${overallPct - 75}% above the minimum threshold.`;
+    } else {
+      document.getElementById('progress-headline').textContent = `Attention needed, ${firstName}`;
+      document.getElementById('progress-subtext').textContent = `You are ${75 - overallPct}% below the minimum threshold.`;
+    }
+
+    const courseList = document.getElementById('course-list');
+    if (data.courses.length === 0) {
+      courseList.innerHTML = '<p class="text-on-surface-variant text-center py-8">No courses attended yet. Mark attendance in any active session to get started.</p>';
+      return;
+    }
+
+    courseList.innerHTML = data.courses.map(c => {
+      const warn = c.percentage < 75;
+      const complete = c.total_sessions > 0 && c.attended === c.total_sessions;
+      const borderClass = warn ? 'border-l-4 border-error border-y border-r border-outline-variant' : 'border border-outline-variant';
+      const badgeClass = warn ? 'bg-error-container text-on-error-container' : complete ? 'bg-surface-container-highest text-on-surface-variant' : 'bg-secondary-container text-on-secondary-container';
+      const barClass = warn ? 'bg-error' : 'bg-secondary';
+      const statusHtml = warn
+        ? `<span class="uppercase">Below Minimum (75%)</span>`
+        : `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">check_circle</span> ${complete ? 'Completed' : 'On Track'}</span>`;
+
+      return `
+      <a href="course_history.html?course=${encodeURIComponent(c.course_name)}" class="flex flex-col gap-3 rounded-xl bg-surface-container-lowest p-4 shadow-sm ${borderClass} block">
+        <div class="flex items-center justify-between">
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2">
+              <span class="text-on-background font-bold text-body-md">${c.course_name}</span>
+              ${warn ? '<span class="material-symbols-outlined text-error text-[18px]" style="font-variation-settings: \'FILL\' 1;">warning</span>' : ''}
+            </div>
+            <span class="text-label-sm text-on-surface-variant">${c.course_code || ''}</span>
+          </div>
+          <div class="${badgeClass} px-2 py-1 rounded-lg text-label-sm font-bold">${c.percentage}%</div>
+        </div>
+        <div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+          <div class="${barClass} h-full rounded-full transition-all duration-1000" style="width: ${c.percentage}%"></div>
+        </div>
+        <div class="flex justify-between items-center text-label-sm ${warn ? 'text-error font-bold' : 'text-on-surface-variant'}">
+          <span>${c.attended} / ${c.total_sessions} classes</span>
+          ${statusHtml}
+        </div>
+      </a>`;
+    }).join('');
+  } catch (e) {
+    document.getElementById('course-list').innerHTML = '<p class="text-error text-center py-8">Could not load dashboard. Pull down to refresh.</p>';
+  }
+}
+loadDashboard();
+</script>
+</body>
+</html>

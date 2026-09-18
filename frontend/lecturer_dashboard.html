@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<title>Lecturer Dashboard - FAMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "surface-container-highest": "#e1e2e4",
+        "surface-container-high": "#e7e8ea",
+        "surface-container": "#edeef0",
+        "surface-container-low": "#f2f4f6",
+        "surface-container-lowest": "#ffffff",
+        "surface-dim": "#d9dadc",
+        "surface-bright": "#f8f9fb",
+        "surface-variant": "#e1e2e4",
+        "surface": "#f8f9fb",
+        "on-surface": "#191c1e",
+        "on-surface-variant": "#464650",
+        "on-background": "#191c1e",
+        "background": "#f7f8fa",
+        "outline": "#767681",
+        "outline-variant": "#c6c5d1",
+        "primary": "#06104c",
+        "on-primary": "#ffffff",
+        "primary-container": "#1e2761",
+        "on-primary-container": "#8790d0",
+        "primary-fixed": "#dfe0ff",
+        "primary-fixed-dim": "#bbc3ff",
+        "on-primary-fixed": "#0a144f",
+        "on-primary-fixed-variant": "#39427d",
+        "inverse-primary": "#bbc3ff",
+        "secondary": "#1b6d24",
+        "on-secondary": "#ffffff",
+        "secondary-container": "#a0f399",
+        "on-secondary-container": "#217128",
+        "secondary-fixed": "#a3f69c",
+        "secondary-fixed-dim": "#88d982",
+        "on-secondary-fixed": "#002204",
+        "on-secondary-fixed-variant": "#005312",
+        "tertiary": "#3b0002",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#620006",
+        "on-tertiary-container": "#ff5d54",
+        "tertiary-fixed": "#ffdad6",
+        "tertiary-fixed-dim": "#ffb4ac",
+        "on-tertiary-fixed": "#410003",
+        "on-tertiary-fixed-variant": "#93000e",
+        "error": "#ba1a1a",
+        "on-error": "#ffffff",
+        "error-container": "#ffdad6",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#2e3132",
+        "inverse-on-surface": "#f0f1f3",
+        "success-academic": "#1b6d24"
+      },
+      borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+      spacing: { base: "4px", xs: "8px", sm: "12px", md: "16px", lg: "24px", xl: "32px", "container-margin": "16px", gutter: "12px", "touch-target": "44px" },
+      fontFamily: {
+        "label-md": ["Inter"], "headline-lg-mobile": ["Inter"], "headline-md": ["Inter"],
+        "body-lg": ["Inter"], "headline-sm": ["Inter"], "display-lg": ["Inter"],
+        "label-sm": ["Inter"], "body-md": ["Inter"]
+      },
+      fontSize: {
+        "label-md": ["14px", {lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600"}],
+        "headline-lg-mobile": ["28px", {lineHeight: "36px", fontWeight: "700"}],
+        "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600"}],
+        "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}],
+        "headline-sm": ["20px", {lineHeight: "28px", fontWeight: "600"}],
+        "display-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700"}],
+        "label-sm": ["12px", {lineHeight: "16px", fontWeight: "500"}],
+        "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}]
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { font-family: 'Inter', sans-serif; background-color: #f7f8fa; -webkit-tap-highlight-color: transparent; }
+</style>
+
+<style>
+  .active-pill-shadow { box-shadow: 0 0 12px rgba(27, 109, 36, 0.4); }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-16">
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-margin h-touch-target bg-surface shadow-[0px_4px_16px_rgba(0,0,0,0.12)]">
+  <button class="flex items-center justify-center w-10 h-10 -ml-2" onclick="openSidebar()">
+    <span class="material-symbols-outlined text-primary">menu</span>
+  </button>
+  <span class="font-headline-md text-headline-md font-bold text-primary">FAMS</span>
+  <div class="w-9 h-9 rounded-full flex items-center justify-center text-white font-label-md" style="background: linear-gradient(135deg, #06104C 0%, #1E2761 100%);" id="avatar-initials">--</div>
+</header>
+
+<div class="fixed inset-0 bg-black/40 z-[90] hidden" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<aside class="fixed top-0 left-0 h-full w-72 bg-surface-container-lowest z-[100] shadow-2xl -translate-x-full transition-transform duration-300 flex flex-col" id="sidebar">
+  <div class="p-lg border-b border-outline-variant flex items-center gap-sm" style="background: linear-gradient(135deg, #06104C 0%, #1E2761 100%);">
+    <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center font-headline-sm text-white" id="sidebar-initials">--</div>
+    <div class="overflow-hidden">
+      <p class="font-label-md text-label-md text-white truncate" id="sidebar-name">Lecturer</p>
+      <p class="font-label-sm text-label-sm text-white/70 truncate">Staff Portal</p>
+    </div>
+    <button class="ml-auto text-white/80 hover:text-white" onclick="closeSidebar()">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+  <nav class="flex-1 p-sm space-y-1 overflow-y-auto">
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="lecturer_dashboard.html">
+      <span class="material-symbols-outlined">home</span><span class="font-label-md text-label-md">Home</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="lecturer_dashboard.html">
+      <span class="material-symbols-outlined">menu_book</span><span class="font-label-md text-label-md">Courses & Sessions</span>
+    </a>
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-on-surface" href="lecturer_profile.html">
+      <span class="material-symbols-outlined">person</span><span class="font-label-md text-label-md">Profile</span>
+    </a>
+  </nav>
+  <div class="p-sm border-t border-outline-variant">
+    <a class="flex items-center gap-sm px-md py-sm rounded-lg hover:bg-error-container transition-colors text-error" href="#" onclick="logout()">
+      <span class="material-symbols-outlined">logout</span><span class="font-label-md text-label-md">Logout</span>
+    </a>
+  </div>
+</aside>
+
+
+<main class="mt-20 px-container-margin max-w-2xl mx-auto space-y-lg">
+  <section class="bg-surface-container-lowest rounded-xl p-md shadow-[0px_4px_16px_rgba(0,0,0,0.12)] border border-surface-variant">
+    <div class="flex items-center gap-xs mb-md">
+      <span class="material-symbols-outlined text-primary">add_circle</span>
+      <h2 class="font-headline-sm text-headline-sm text-primary">Create Session</h2>
+    </div>
+    <form class="space-y-md" onsubmit="return false">
+      <div class="relative group">
+        <select class="w-full h-[56px] px-md pt-xs bg-surface border border-outline-variant rounded-lg focus:border-primary focus:ring-0 transition-colors appearance-none font-body-md" id="course-select">
+          <option>Loading courses...</option>
+        </select>
+        <label class="absolute left-md top-1 text-xs text-primary font-label-md bg-surface px-1">Course Name</label>
+        <span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+      </div>
+      <div class="flex gap-gutter">
+        <div class="relative flex-1">
+          <input class="w-full h-[56px] px-md pt-xs bg-surface border border-outline-variant rounded-lg focus:border-primary focus:ring-0 transition-colors font-body-md" id="session-date" type="date">
+          <label class="absolute left-md top-1 text-xs text-primary font-label-md bg-surface px-1">Date</label>
+        </div>
+        <div class="relative flex-1">
+          <input class="w-full h-[56px] px-md pt-xs bg-surface border border-outline-variant rounded-lg focus:border-primary focus:ring-0 transition-colors font-body-md" id="ip-range" placeholder="192.168.1.0/24" type="text">
+          <label class="absolute left-md top-1 text-xs text-primary font-label-md bg-surface px-1">Wi-Fi IP Range</label>
+        </div>
+      </div>
+      <button class="w-full h-11 border border-primary text-primary rounded-lg font-label-sm text-label-sm flex items-center justify-center gap-xs active:scale-95 transition-transform" onclick="detectNetwork()" type="button">
+        <span class="material-symbols-outlined text-[18px]">wifi_find</span>
+        <span id="detect-label">Use My Current Network</span>
+      </button>
+      <p class="font-label-sm text-label-sm text-on-surface-variant" id="detect-hint">Detects the network you (the lecturer) are on right now and suggests a matching range. Useful on your home Wi-Fi and real classroom use, run this while connected to the classroom or campus Wi-Fi.</p>
+      <div id="session-error" class="hidden bg-error-container text-on-error-container rounded-lg p-sm font-label-sm text-label-sm"></div>
+      <button class="w-full h-touch-target bg-primary text-on-primary rounded-lg font-label-md flex items-center justify-center gap-xs active:scale-95 transition-transform" id="start-session-btn" onclick="createSession()" type="button">
+        <span class="material-symbols-outlined">bolt</span>
+        Start Session
+      </button>
+    </form>
+  </section>
+
+  <section class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-surface-variant">
+    <div class="flex items-center gap-xs mb-md">
+      <span class="material-symbols-outlined text-secondary">library_add</span>
+      <h2 class="font-headline-sm text-headline-sm text-primary">New Course</h2>
+    </div>
+    <div class="flex gap-gutter mb-md">
+      <input class="flex-1 h-12 px-md bg-surface border border-outline-variant rounded-lg font-body-md" id="new-course-name" placeholder="Course Name (e.g. Networking Fundamentals)" type="text">
+      <input class="w-32 h-12 px-md bg-surface border border-outline-variant rounded-lg font-body-md" id="new-course-code" placeholder="Code" type="text">
+    </div>
+    <div id="course-error" class="hidden bg-error-container text-on-error-container rounded-lg p-sm font-label-sm text-label-sm mb-md"></div>
+    <div id="course-success" class="hidden bg-secondary-container text-on-secondary-container rounded-lg p-sm font-label-sm text-label-sm mb-md"></div>
+    <button class="w-full h-12 border-2 border-primary text-primary rounded-lg font-label-md active:scale-95 transition-transform" onclick="createCourse()" type="button">Create Course</button>
+  </section>
+
+  <section class="space-y-md" id="sessions-section">
+    <div class="flex justify-between items-center">
+      <h3 class="font-headline-sm text-headline-sm text-on-surface">Recent Sessions</h3>
+      <button class="text-primary font-label-md cursor-pointer hover:underline bg-transparent border-none" onclick="loadCoursesAndSessions()">Refresh</button>
+    </div>
+    <div id="sessions-list">
+      <p class="text-on-surface-variant text-center py-8">Loading sessions...</p>
+    </div>
+  </section>
+</main>
+
+<div class="fixed top-20 left-1/2 -translate-x-1/2 z-[110] bg-primary text-on-primary px-lg py-sm rounded-full shadow-lg transform -translate-y-32 transition-transform duration-500 flex items-center gap-xs" id="toast">
+  <span class="material-symbols-outlined">check_circle</span>
+  <span class="font-label-md text-label-md" id="toast-text">Session Started Successfully</span>
+</div>
+
+<script>
+function openSidebar() {
+  document.getElementById('sidebar').classList.remove('-translate-x-full');
+  document.getElementById('sidebar-overlay').classList.remove('hidden');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebar-overlay').classList.add('hidden');
+}
+
+
+const API = "";
+const token = localStorage.getItem('lecturer_token');
+if (!token) window.location.href = 'lecturer_login.html';
+const lecturerName = localStorage.getItem('lecturer_name') || '';
+const initials = lecturerName.split(' ').map(n => n[0]).slice(0,2).join('').toUpperCase() || '--';
+document.getElementById('avatar-initials').textContent = initials;
+document.getElementById('sidebar-initials').textContent = initials;
+document.getElementById('sidebar-name').textContent = lecturerName;
+
+let myCourses = [];
+
+function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+
+function showToast(text) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-text').textContent = text;
+  toast.classList.remove('-translate-y-32');
+  toast.classList.add('translate-y-0');
+  setTimeout(() => {
+    toast.classList.add('-translate-y-32');
+    toast.classList.remove('translate-y-0');
+  }, 3000);
+}
+
+async function detectNetwork() {
+  const label = document.getElementById('detect-label');
+  label.textContent = 'Detecting...';
+  try {
+    const res = await fetch(`${API}/lecturers/detect-network`, { headers: { 'Authorization': `Bearer ${token}` } });
+    const data = await res.json();
+    if (res.ok && data.suggested_range) {
+      document.getElementById('ip-range').value = data.suggested_range;
+      label.textContent = 'Use My Current Network';
+      showToast(`Detected: ${data.your_ip} → suggested ${data.suggested_range}`);
+    } else {
+      label.textContent = 'Use My Current Network';
+      showToast('Could not detect network automatically.');
+    }
+  } catch (e) {
+    label.textContent = 'Use My Current Network';
+    showToast('Could not detect network automatically.');
+  }
+}
+
+async function createCourse() {
+  const name = document.getElementById('new-course-name').value.trim();
+  const code = document.getElementById('new-course-code').value.trim();
+  const errEl = document.getElementById('course-error');
+  const okEl = document.getElementById('course-success');
+  errEl.classList.add('hidden'); okEl.classList.add('hidden');
+
+  if (!name || !code) { errEl.textContent = 'Enter both course name and code.'; errEl.classList.remove('hidden'); return; }
+
+  const fd = new FormData();
+  fd.append('course_name', name);
+  fd.append('course_code', code);
+  const res = await fetch(`${API}/lecturers/courses/create`, { method: 'POST', body: fd, headers: { 'Authorization': `Bearer ${token}` } });
+  const data = await res.json();
+  if (!res.ok) { errEl.textContent = data.detail || 'Could not create course.'; errEl.classList.remove('hidden'); return; }
+  okEl.textContent = `Course created (ID: ${data.course_id}).`;
+  okEl.classList.remove('hidden');
+  document.getElementById('new-course-name').value = '';
+  document.getElementById('new-course-code').value = '';
+  loadCoursesAndSessions();
+}
+
+async function createSession() {
+  const courseId = document.getElementById('course-select').value;
+  const date = document.getElementById('session-date').value;
+  const ipRange = document.getElementById('ip-range').value.trim();
+  const errEl = document.getElementById('session-error');
+  errEl.classList.add('hidden');
+
+  if (!courseId || !date || !ipRange) { errEl.textContent = 'Fill in course, date, and Wi-Fi IP range.'; errEl.classList.remove('hidden'); return; }
+
+  const fd = new FormData();
+  fd.append('course_id', courseId);
+  fd.append('date', date);
+  fd.append('allowed_ip_range', ipRange);
+  const res = await fetch(`${API}/lecturers/sessions/create`, { method: 'POST', body: fd, headers: { 'Authorization': `Bearer ${token}` } });
+  const data = await res.json();
+  if (!res.ok) { errEl.textContent = data.detail || 'Could not create session.'; errEl.classList.remove('hidden'); return; }
+  showToast(`Session Started — ID ${data.session_id}`);
+  loadCoursesAndSessions();
+}
+
+async function endSession(sessionId) {
+  await fetch(`${API}/lecturers/sessions/${sessionId}/end`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` } });
+  showToast('Session Ended');
+  loadCoursesAndSessions();
+}
+
+async function exportExcel(sessionId) {
+  try {
+    const res = await fetch(`${API}/lecturers/sessions/${sessionId}/export`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!res.ok) {
+      showToast('Could not export attendance sheet.');
+      return;
+    }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const disposition = res.headers.get('Content-Disposition');
+    const match = disposition && disposition.match(/filename="?([^"]+)"?/);
+    a.download = match ? match[1] : `Attendance_${sessionId}.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  } catch (e) {
+    showToast('Could not export attendance sheet.');
+  }
+}
+
+function initials2(name) {
+  return name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+}
+
+async function renderLiveSession(session) {
+  const res = await fetch(`${API}/lecturers/sessions/${session.id}/attendance`, { headers: { 'Authorization': `Bearer ${token}` } });
+  const data = await res.json();
+  const total = data.attendance.length;
+  const present = data.attendance.filter(a => a.status === 'Present').length;
+  const pct = total > 0 ? Math.round((present / total) * 100) : 0;
+
+  const rows = data.attendance.slice(0, 8).map(a => {
+    const isPresent = a.status === 'Present';
+    return `
+    <div class="flex items-center justify-between p-sm bg-surface rounded-lg border border-surface-variant ${isPresent ? '' : 'opacity-60'} transition-colors">
+      <div class="flex items-center gap-sm">
+        <div class="w-8 h-8 rounded-full ${isPresent ? 'bg-primary-fixed text-primary' : 'bg-surface-container-highest text-on-surface-variant'} flex items-center justify-center font-label-md">${initials2(a.full_name)}</div>
+        <div>
+          <p class="font-label-md text-label-md">${a.full_name}</p>
+          <p class="font-label-sm text-label-sm text-on-surface-variant">${a.registration_number}</p>
+        </div>
+      </div>
+      <span class="w-3 h-3 rounded-full ${isPresent ? 'bg-secondary shadow-[0_0_8px_rgba(27,109,36,0.5)]' : 'bg-error'}"></span>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="bg-surface-container-lowest border-2 border-secondary rounded-xl p-md shadow-lg relative overflow-hidden">
+      <div class="flex justify-between items-start mb-sm">
+        <div>
+          <div class="inline-flex items-center gap-xs px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container active-pill-shadow mb-xs">
+            <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+            <span class="font-label-sm text-label-sm uppercase tracking-wider">LIVE</span>
+          </div>
+          <h4 class="font-headline-sm text-headline-sm text-primary">${session.course_code}: ${session.course_name}</h4>
+          <p class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-xs">
+            <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+            ${session.date}
+          </p>
+        </div>
+        <div class="text-right">
+          <div class="font-display-lg text-display-lg text-secondary">${present}<span class="text-on-surface-variant text-body-lg">/${total}</span></div>
+          <p class="font-label-sm text-label-sm text-on-surface-variant">Present</p>
+        </div>
+      </div>
+      <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden mb-lg">
+        <div class="h-full bg-secondary rounded-full transition-all duration-1000" style="width: ${pct}%;"></div>
+      </div>
+      <div class="space-y-xs max-h-48 overflow-y-auto pr-xs no-scrollbar">
+        ${rows || '<p class="text-on-surface-variant text-center py-4 font-label-sm">No students have marked attendance yet.</p>'}
+      </div>
+      <div class="mt-lg flex gap-gutter">
+        <button class="flex-1 h-touch-target bg-tertiary-container text-on-tertiary-container border border-on-tertiary-container/20 rounded-lg font-label-md flex items-center justify-center gap-xs active:scale-95 transition-transform" onclick="endSession(${session.id})">
+          <span class="material-symbols-outlined">stop_circle</span>
+          End Session
+        </button>
+        <button class="flex-1 h-touch-target bg-primary-container text-on-primary-container border border-primary/20 rounded-lg font-label-md flex items-center justify-center gap-xs active:scale-95 transition-transform" onclick="exportExcel(${session.id})">
+          <span class="material-symbols-outlined">download</span>
+          Export Excel
+        </button>
+      </div>
+    </div>`;
+}
+
+function renderInactiveSession(session, present, total) {
+  return `
+    <div class="bg-surface-container-low border border-outline-variant rounded-xl p-md opacity-80">
+      <div class="flex justify-between items-start">
+        <div>
+          <h4 class="font-label-md text-label-md text-on-surface-variant">${session.date}</h4>
+          <p class="font-headline-sm text-headline-sm text-primary">${session.course_code}: ${session.course_name}</p>
+        </div>
+        <div class="text-right">
+          <div class="font-headline-sm text-headline-sm text-on-surface">${present}/${total}</div>
+          <p class="font-label-sm text-label-sm text-on-surface-variant">
+            <button class="text-primary underline" onclick="exportExcel(${session.id})">Export</button>
+          </p>
+        </div>
+      </div>
+    </div>`;
+}
+
+async function loadCoursesAndSessions() {
+  const courseSelect = document.getElementById('course-select');
+  const sessionsList = document.getElementById('sessions-list');
+
+  try {
+    const courseRes = await fetch(`${API}/lecturers/courses`, { headers: { 'Authorization': `Bearer ${token}` } });
+    if (courseRes.status === 401) { logout(); return; }
+    const courseData = await courseRes.json();
+    myCourses = courseData.courses || [];
+
+    courseSelect.innerHTML = myCourses.length
+      ? myCourses.map(c => `<option value="${c.id}">${c.course_code}: ${c.course_name}</option>`).join('')
+      : '<option value="">Create a course below first</option>';
+
+    const sessRes = await fetch(`${API}/lecturers/sessions`, { headers: { 'Authorization': `Bearer ${token}` } });
+    const sessData = await sessRes.json();
+    const sessions = sessData.sessions || [];
+
+    if (sessions.length === 0) {
+      sessionsList.innerHTML = '<p class="text-on-surface-variant text-center py-8">No sessions yet. create one above.</p>';
+      return;
+    }
+
+    let html = '';
+    for (const s of sessions) {
+      if (s.is_active) {
+        html += await renderLiveSession({ id: s.id, course_code: s.course_code, course_name: s.course_name, date: s.date });
+      } else {
+        html += renderInactiveSession({ id: s.id, course_code: s.course_code, course_name: s.course_name, date: s.date }, s.present_count, s.total_enrolled);
+      }
+    }
+    sessionsList.innerHTML = html;
+  } catch (e) {
+    sessionsList.innerHTML = '<p class="text-error text-center py-8">Could not load sessions. Check your connection.</p>';
+  }
+}
+
+loadCoursesAndSessions();
+</script>
+</body>
+</html>
