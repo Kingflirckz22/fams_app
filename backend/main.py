@@ -28,6 +28,8 @@ app.include_router(attendance.router)
 # Serve the frontend HTML files at /app
 app.mount("/app", StaticFiles(directory="frontend", html=True), name="frontend")
 
+from fastapi.responses import RedirectResponse
+
 @app.get("/")
 def root():
-    return {"message": "FAMS API is running. Open /app in your browser."}
+    return RedirectResponse(url="/app/index.html")
