@@ -8,7 +8,11 @@ import tempfile
 
 mp_face = mp.solutions.face_detection
 
-MATCH_THRESHOLD = 0.6
+MATCH_THRESHOLD = 0.6           # same-person verification (attendance marking)
+DUPLICATE_THRESHOLD = 0.78      # different-person duplicate detection (enrolment)
+# Duplicate-check needs a stricter (higher) bar than same-person matching:
+# wrongly blocking a real student from enrolling is a worse outcome than
+# occasionally missing a genuine duplicate-account attempt.
 
 
 def detect_and_crop_face(image_array: np.ndarray):
@@ -59,8 +63,7 @@ def compute_similarity(embedding_a_json: str, embedding_b_json: str) -> float:
     return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
 
 
-
-# LIVENESS / ANTI-SPOOFING CHECK 
+# LIVENESS / ANTI-SPOOFING CHECK (unchanged from previous version)
 
 def _compute_lbp(gray: np.ndarray) -> np.ndarray:
     h, w = gray.shape
@@ -120,11 +123,6 @@ def check_liveness(face_image: np.ndarray) -> dict:
     }
 
 
-# ─────────────────────────────────────────────────────────────────────────
-# ENROLLMENT — now returns the embedding + a representative face photo
-# instead of writing anything to local disk. The caller (students.py)
-# is responsible for saving both directly into the database.
-# ─────────────────────────────────────────────────────────────────────────
 
 def process_video_for_enrollment(video_path: str) -> dict:
     """

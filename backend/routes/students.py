@@ -9,7 +9,7 @@ from ..services.face_service import (
     compare_face_to_stored,
     extract_face_jpeg_from_image,
     compute_similarity,
-    MATCH_THRESHOLD
+    DUPLICATE_THRESHOLD
 )
 import cv2
 import numpy as np
@@ -108,7 +108,9 @@ async def enroll_face(
 
     for other in other_students:
         similarity = compute_similarity(result["embedding_json"], other.face_embedding)
-        if similarity >= MATCH_THRESHOLD:
+        if similarity >= DUPLICATE_THRESHOLD:
+            print(f"[duplicate-check] student {student.id} blocked — similarity {similarity:.4f} "
+                  f"against student {other.id} (threshold {DUPLICATE_THRESHOLD})")
             raise HTTPException(
                 status_code=409,
                 detail="This face appears to already be enrolled under a different student account. If you believe this is an error, contact your department admin."
