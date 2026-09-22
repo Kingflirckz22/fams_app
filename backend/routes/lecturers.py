@@ -258,31 +258,64 @@ def export_excel(
     current: dict = Depends(get_current_lecturer),
     db: Session = Depends(get_db)
 ):
+    """
+    Exports (or updates) a single cumulative attendance register for the
+    session's course — one file per course, not one file per session.
+    Each call adds or refreshes a column for this session's date, so
+    repeated exports across a term build up a running attendance sheet
+    (Registration Number, Full Name, then one column per session date)
+    instead of producing a separate file every time.
+    """
     sess = db.query(AttSession).filter(AttSession.id == session_id).first()
     if not sess:
         raise HTTPException(status_code=404, detail="Session not found")
+
     enrollments = db.query(CourseEnrollment).filter(
         CourseEnrollment.course_id == sess.course_id
     ).all()
-    rows = []
+
+    # This session's status per student, keyed by registration number
+    session_data = {}
     for e in enrollments:
         student = e.student
         att = db.query(Attendance).filter(
             Attendance.student_id == student.id,
             Attendance.session_id == session_id
         ).first()
-        rows.append({
-            "Registration Number": student.registration_number,
+        session_data[student.registration_number] = {
             "Full Name": student.full_name,
-            "Date": sess.date,
-            "Time Marked": att.timestamp.strftime("%H:%M:%S") if att else "—",
-            "Status": att.status if att else "Absent",
-            "Present ✓": "✓" if att else ""
-        })
-    df = pd.DataFrame(rows)
+            "status": att.status if att else "Absent"
+        }
+
     os.makedirs("attendance_files", exist_ok=True)
-    filename = f"attendance_files/Attendance_{sess.course.course_code}_{sess.date}.xlsx"
+    filename = f"attendance_files/Attendance_{sess.course.course_code}.xlsx"
+    date_col = sess.date
+
+    if os.path.exists(filename):
+        df = pd.read_excel(filename, dtype=str)
+        df = df.set_index("Registration Number")
+    else:
+        df = pd.DataFrame(columns=["Full Name"])
+        df.index.name = "Registration Number"
+
+    # Add/update this session's rows and date column. New students who
+    # enrolled after earlier sessions are added as new rows automatically.
+    for reg_number, info in session_data.items():
+        df.loc[reg_number, "Full Name"] = info["Full Name"]
+        df.loc[reg_number, date_col] = info["status"]
+
+    # Keep date columns in chronological order after Full Name
+    date_columns = [c for c in df.columns if c != "Full Name"]
+    try:
+        date_columns = sorted(date_columns, key=lambda d: pd.to_datetime(d))
+    except Exception:
+        date_columns = sorted(date_columns)
+    df = df[["Full Name"] + date_columns]
+    df = df.fillna("")  # blank cells for dates a student wasn't yet enrolled
+
+    df = df.reset_index()
     df.to_excel(filename, index=False)
+
     return FileResponse(
         filename,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
