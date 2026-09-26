@@ -8,23 +8,52 @@ import tempfile
 
 mp_face = mp.solutions.face_detection
 
-MATCH_THRESHOLD = 0.6           # same-person verification (attendance marking)
-DUPLICATE_THRESHOLD = 0.78      # different-person duplicate detection (enrolment)
+MATCH_THRESHOLD = 0.62           # same-person verification (attendance marking)
+DUPLICATE_THRESHOLD = 0.84      # different-person duplicate detection (enrolment)
 # Duplicate-check needs a stricter (higher) bar than same-person matching:
 # wrongly blocking a real student from enrolling is a worse outcome than
 # occasionally missing a genuine duplicate-account attempt.
 
 
 def detect_and_crop_face(image_array: np.ndarray):
-    """Detect face in image array and return cropped face."""
+    """Detect face in image array, align it so the eyes are level
+    (using MediaPipe's eye keypoints), then return the cropped, aligned
+    face. This alignment step is required because FaceNet was trained
+    on eye-level-aligned faces and is sensitive to rotation/tilt."""
+    h, w = image_array.shape[:2]
+
+    # --- Pass 1: detect on the original frame to get eye keypoints ---
     with mp_face.FaceDetection(min_detection_confidence=0.6) as detector:
         rgb = cv2.cvtColor(image_array, cv2.COLOR_BGR2RGB)
         results = detector.process(rgb)
         if not results.detections:
             return None
+
         detection = results.detections[0]
-        bbox = detection.location_data.relative_bounding_box
-        h, w = image_array.shape[:2]
+        kp = detection.location_data.relative_keypoints
+        if len(kp) < 2:
+            return None
+
+        # MediaPipe keypoint order: 0 = right eye, 1 = left eye
+        # (from the subject's perspective, as seen in the image)
+        rx, ry = kp[0].x * w, kp[0].y * h
+        lx, ly = kp[1].x * w, kp[1].y * h
+
+        # Angle needed to rotate the image so the eye line is horizontal
+        angle = np.degrees(np.arctan2(ly - ry, lx - rx))
+        eye_center = ((rx + lx) / 2.0, (ry + ly) / 2.0)
+
+        rot_mat = cv2.getRotationMatrix2D(eye_center, angle, 1.0)
+        rotated = cv2.warpAffine(image_array, rot_mat, (w, h), flags=cv2.INTER_LINEAR)
+
+    # --- Pass 2: re-detect on the now eye-level frame for an accurate bbox ---
+    with mp_face.FaceDetection(min_detection_confidence=0.6) as detector2:
+        rgb2 = cv2.cvtColor(rotated, cv2.COLOR_BGR2RGB)
+        results2 = detector2.process(rgb2)
+        if not results2.detections:
+            return None
+
+        bbox = results2.detections[0].location_data.relative_bounding_box
         x = max(0, int(bbox.xmin * w))
         y = max(0, int(bbox.ymin * h))
         bw = int(bbox.width * w)
@@ -35,7 +64,7 @@ def detect_and_crop_face(image_array: np.ndarray):
         y1 = max(0, y - pad_y)
         x2 = min(w, x + bw + pad_x)
         y2 = min(h, y + bh + pad_y)
-        cropped = image_array[y1:y2, x1:x2]
+        cropped = rotated[y1:y2, x1:x2]
         return cropped if cropped.size > 0 else None
 
 
