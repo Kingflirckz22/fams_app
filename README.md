@@ -46,4 +46,4 @@ requirements.txt
 
 ## Author
 
-Final year project — HND II, Computer Science, Federal Polytechnic Ado-Ekiti.
+Anjorin Olayemi Enitan.
